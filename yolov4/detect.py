@@ -20,12 +20,12 @@ import pytesseract
 import re
 
 flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
-flags.DEFINE_string('weights', './checkpoints/custom',
+flags.DEFINE_string('weights', '/Users/sangmin/Desktop/캡스톤/Capstone/yolov4/checkpoints/custom/saved_model.pb',
                     'path to weights file')
 flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_list('images', './data/images/car11.jpg', 'path to input image')
+flags.DEFINE_list('images', './data/images/', 'path to input image')
 flags.DEFINE_string('output', './detections/', 'path to output folder')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.50, 'score threshold')
