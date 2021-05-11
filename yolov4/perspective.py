@@ -1,22 +1,15 @@
 import cv2
-import numpy as np
-from matplotlib import pyplot as plt
 
-img = cv2.imread('./yolov4/data/images/car6(2).png')
-rows, cols, ch = img.shape
+src = cv2.imread("./yolov4/data/images/car6(2).png")
+dst = src.copy()
+cv2.imshow("src",src)
+gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
+corners = cv2.goodFeaturesToTrack(gray, 100, 0.01, 5, blockSize=3, useHarrisDetector=True, k=0.03)
 
-pts1 = np.float32([[200,100],[400,100],[200,200]])
-pts2 = np.float32([[200,300],[400,200],[200,400]])
+for i in corners:
+    cv2.circle(dst, tuple(i[0]), 3, (0, 0, 255), 2)
 
-# pts1의 좌표에 표시. Affine 변환 후 이동 점 확인.
-cv2.circle(img, (200,100), 10, (255,0,0),-1)
-cv2.circle(img, (400,100), 10, (0,255,0),-1)
-cv2.circle(img, (200,200), 10, (0,0,255),-1)
-plt.scatter(6,10)
-M = cv2.getAffineTransform(pts1, pts2)
 
-dst = cv2.warpAffine(img, M, (cols,rows))
-
-plt.subplot(121),plt.imshow(img),plt.title('image')
-plt.subplot(122),plt.imshow(dst),plt.title('Affine')
-plt.show()
+cv2.imshow("dst", dst)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
