@@ -19,6 +19,7 @@ def auto_scan_image():
     image = cv2.imread("/detections/sample.png")
     print(image)
     orig = image.copy()
+"""
 
     r = 800.0 /image.shape[0]
     dim = (int(image.shape[1] * r ), 800)
@@ -38,7 +39,6 @@ def auto_scan_image():
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
     (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:5]
@@ -95,6 +95,5 @@ def auto_scan_image():
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
-if __name__ == '__main__':
-    auto_scan_image()
+"""
+auto_scan_image()
