@@ -14,9 +14,7 @@ import re
 # function to recognize license plate numbers using Tesseract OCR
 def recognize_plate(img, coords):
     # separate coordinates from box
-    xmin, ymin, xmax, ymax = coords
-    # get the subimage that makes up the bounded region and take an additional 5 pixels on each side
-    box = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
+    box = img
     # grayscale region within bounding box
     gray = cv2.cvtColor(box, cv2.COLOR_RGB2GRAY)
     # resize image to three times as large as original for better readability

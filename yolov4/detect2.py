@@ -48,21 +48,23 @@ class Flag:
         self.score = 0.50
         self.crop = True
     
-def detectPlate(path):
+def detectPlate(image_path):
     config = ConfigProto()
     config.gpu_options.allow_growth = True
     session = InteractiveSession(config=config)
     flag = Flag()
-    STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config()
+    #STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config()
     input_size = flag.size
     images = flag.images
-    image_path = images + path
-    #print(image_path)
+
+    print(image_path)
     # load model
     saved_model_loaded = tf.saved_model.load(flag.weights, tags=[tag_constants.SERVING])
 
     # loop through images in list and run Yolov4 model on each
-    original_image = cv2.imread(image_path)
+    img_array = np.fromfile(image_path, np.uint8)
+    original_image = cv2.imdecode(img_array,cv2.IMREAD_COLOR)
+    #original_image = cv2.imread(image_path)
     #cv2.imshow('image', original_image)
     #cv2.waitKey(0)
     original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
@@ -115,15 +117,15 @@ def detectPlate(path):
 
     # if crop flag is enabled, crop each detection and save it as new image
     if flag.crop:
-        print(image_name)
+        #print(image_name)
         crop_path = os.path.join(os.getcwd(), 'detections', image_name)
-        print(crop_path)
+        #print(crop_path)
         try:
             os.mkdir(crop_path)
         except FileExistsError:
             pass
-        image = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, allowed_classes)
-        print(OCR(image))
+    image = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, allowed_classes)
+    print(OCR(image))
 
 def OCR(image):
     box = image
@@ -133,7 +135,7 @@ def OCR(image):
     gray = cv2.resize(gray, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
     # perform gaussian blur to smoothen image
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
-    cv2.imshow("Gray", gray)
+    #cv2.imshow("Gray", gray)
     # cv2.waitKey(0)
     # threshold the image using Otsus method to preprocess for tesseract
     ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
@@ -146,8 +148,8 @@ def OCR(image):
     # cv2.imshow("Dilation", dilation)
     # cv2.waitKey(0)
     # find contours of regions of interest within license plate
-    cv2.imshow('plate', dilation)
-    cv2.imwrite('detections/sample.png',dilation)
+    #cv2.imshow('plate', dilation)
+    #cv2.imwrite('detections/sample.png',dilation)
 
 
     try:
@@ -237,4 +239,7 @@ def OCR(image):
 if __name__ == '__main__':
     # image=cv2.imread('./data/images/car6(2).png')
     # OCR(image)
-    detectPlate('car5.jpg')
+    path = 'C:/Users/user01/Desktop/박상민/OneDrive_2021-03-29/KarPlate Dataset/Subset EER/images'
+    img_list = os.listdir(path)
+    for image in img_list:
+        detectPlate(path+'/'+image)
