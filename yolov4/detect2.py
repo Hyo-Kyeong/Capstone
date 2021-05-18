@@ -237,4 +237,4 @@ def OCR(image):
 if __name__ == '__main__':
     # image=cv2.imread('./data/images/car6(2).png')
     # OCR(image)
-    detectPlate('car5.jpg')
+    detectPlate('car0.jpg')

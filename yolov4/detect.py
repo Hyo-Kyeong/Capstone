@@ -32,7 +32,7 @@ flags.DEFINE_boolean('dont_show', False, 'dont show image output')
 flags.DEFINE_boolean('info', False, 'print info on detections')
 flags.DEFINE_boolean('crop', False, 'crop detections from images')
 flags.DEFINE_boolean('ocr', False, 'perform generic OCR on detection regions')
-flags.DEFINE_boolean('plate', True, 'perform license plate recognition')
+flags.DEFINE_boolean('plate', False, 'perform license plate recognition')
 
 def main(_argv):
     config = ConfigProto()
@@ -80,6 +80,7 @@ def main(_argv):
             infer = saved_model_loaded.signatures['serving_default']
             batch_data = tf.constant(images_data)
             pred_bbox = infer(batch_data)
+            print(pred_bbox)
             for key, value in pred_bbox.items():
                 boxes = value[:, :, 0:4]
                 pred_conf = value[:, :, 4:]
@@ -97,6 +98,7 @@ def main(_argv):
 
         # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, xmax, ymax
         original_h, original_w, _ = original_image.shape
+        #print(boxes.numpy()[0])
         bboxes = utils.format_boxes(boxes.numpy()[0], original_h, original_w)
         
         # hold all detection data in one variable
@@ -132,9 +134,11 @@ def main(_argv):
             for key, value in counted_classes.items():
                 print("Number of {}s: {}".format(key, value))
             image = utils.draw_bbox(original_image, pred_bbox, FLAGS.info, counted_classes, allowed_classes=allowed_classes, read_plate = FLAGS.plate)
+            #print(pred_bbox)
         else:
             image = utils.draw_bbox(original_image, pred_bbox, FLAGS.info, allowed_classes=allowed_classes, read_plate = FLAGS.plate)
-        
+            #print(pred_bbox)
+
         image = Image.fromarray(image.astype(np.uint8))
         if not FLAGS.dont_show:
             image.show()

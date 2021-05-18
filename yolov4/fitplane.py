@@ -16,10 +16,9 @@ def order_points(pts):
     return rect
 
 def auto_scan_image():
-    image = cv2.imread("/detections/sample.png")
+    image = cv2.imread("./detections/sample.png")
     print(image)
     orig = image.copy()
-"""
 
     r = 800.0 /image.shape[0]
     dim = (int(image.shape[1] * r ), 800)
@@ -95,5 +94,7 @@ def auto_scan_image():
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-"""
-auto_scan_image()
+
+
+if __name__ == '__main__':
+    auto_scan_image()
