@@ -127,7 +127,6 @@ def detectPlate(path):
 
 def OCR(image):
     box = image
-    cv2.imwrite('detections/sample.png',image)
     # grayscale region within bounding box
     gray = cv2.cvtColor(box, cv2.COLOR_RGB2GRAY)
     # resize image to three times as large as original for better readability
@@ -148,6 +147,7 @@ def OCR(image):
     # cv2.waitKey(0)
     # find contours of regions of interest within license plate
     cv2.imshow('plate', dilation)
+    cv2.imwrite('detections/sample.png',dilation)
 
 
     try:
@@ -237,4 +237,4 @@ def OCR(image):
 if __name__ == '__main__':
     # image=cv2.imread('./data/images/car6(2).png')
     # OCR(image)
-    detectPlate('car0.jpg')
+    detectPlate('car5.jpg')

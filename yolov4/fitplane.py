@@ -20,9 +20,9 @@ def auto_scan_image():
     print(image)
     orig = image.copy()
 
-    r = 800.0 /image.shape[0]
-    dim = (int(image.shape[1] * r ), 800)
-    image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
+    #r = 800.0 /image.shape[0]
+    #dim = (int(image.shape[1] * r ), 800)
+    #image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
 
     
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
