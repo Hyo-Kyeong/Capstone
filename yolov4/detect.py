@@ -23,7 +23,7 @@ flags.DEFINE_string('weights', './checkpoints/custom-416',
 flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_list('images', './data/images/car5.jpg', 'path to input image')
+flags.DEFINE_list('images', 'C:/Users/user01/Desktop/박상민/OneDrive_2021-03-29/KarPlate Dataset/Subset EER/images', 'path to input image')
 flags.DEFINE_string('output', './detections/', 'path to output folder')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.50, 'score threshold')
@@ -47,10 +47,18 @@ def main(_argv):
             interpreter = tf.lite.Interpreter(model_path=FLAGS.weights)
     else:
             saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
+    #create dataSet list
+    images = str(images[0])
+    img_list = os.listdir(images)
+    #print(img_list)
 
     # loop through images in list and run Yolov4 model on each
-    for count, image_path in enumerate(images, 1):
-        original_image = cv2.imread(image_path)
+    for count, image_path in enumerate(img_list, 1): #images origin
+        print(images+'/'+image_path)
+        #경로에 한글 있어서 array 형태로 넘겨주기
+        img_array = np.fromfile(images+'/'+image_path, np.uint8)
+        original_image = cv2.imdecode(img_array,cv2.IMREAD_COLOR)
+        #original_image = cv2.imread(img)
         original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
 
         image_data = cv2.resize(original_image, (input_size, input_size))
@@ -80,7 +88,7 @@ def main(_argv):
             infer = saved_model_loaded.signatures['serving_default']
             batch_data = tf.constant(images_data)
             pred_bbox = infer(batch_data)
-            print(pred_bbox)
+            #print(pred_bbox)
             for key, value in pred_bbox.items():
                 boxes = value[:, :, 0:4]
                 pred_conf = value[:, :, 4:]
@@ -143,7 +151,8 @@ def main(_argv):
         if not FLAGS.dont_show:
             image.show()
         image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
-        cv2.imwrite(FLAGS.output + 'detection' + str(count) + '.png', image)
+        #detection_file write
+        #cv2.imwrite(FLAGS.output + 'detection' + str(count) + '.png', image)
 
 if __name__ == '__main__':
     try:
