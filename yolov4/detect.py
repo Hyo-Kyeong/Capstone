@@ -28,10 +28,10 @@ flags.DEFINE_string('output', './detections/', 'path to output folder')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.50, 'score threshold')
 flags.DEFINE_boolean('count', False, 'count objects within images')
-flags.DEFINE_boolean('dont_show', False, 'dont show image output')
+flags.DEFINE_boolean('dont_show', True, 'dont show image output')
 flags.DEFINE_boolean('info', False, 'print info on detections')
 flags.DEFINE_boolean('crop', False, 'crop detections from images')
-flags.DEFINE_boolean('ocr', False, 'perform generic OCR on detection regions')
+flags.DEFINE_boolean('ocr', True, 'perform generic OCR on detection regions')
 flags.DEFINE_boolean('plate', False, 'perform license plate recognition')
 
 def main(_argv):
@@ -132,8 +132,8 @@ def main(_argv):
 
         # if ocr flag is enabled, perform general text extraction using Tesseract OCR on object detection bounding box
         if FLAGS.ocr:
-            ocr(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox)
-
+            #ocr(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox)
+            utils.recognized(image)
         # if count flag is enabled, perform counting of objects
         if FLAGS.count:
             # count objects found
