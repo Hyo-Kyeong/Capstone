@@ -16,7 +16,7 @@ def order_points(pts):
     return rect
 
 def auto_scan_image():
-    image = cv2.imread("./detections/sample.png")
+    image = cv2.imread("./detections/18.jpg")
     print(image)
     orig = image.copy()
 
@@ -35,6 +35,7 @@ def auto_scan_image():
     cv2.namedWindow('Edged',cv2.WINDOW_NORMAL)
     cv2.imshow("Image",image)
     cv2.imshow("Edged",edged)
+    cv2.imwrite("./detections/18.png",edged)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
