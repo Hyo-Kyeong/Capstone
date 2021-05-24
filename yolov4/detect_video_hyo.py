@@ -189,8 +189,6 @@ def detectPlate(path):
         prevCarPlateNum = plate_num
 
         print('max = ', maxCnt, 'carPlateNum = ', carPlateNum)
-        if flag.output:
-            out.write(result)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
     cv2.destroyAllWindows()
 
