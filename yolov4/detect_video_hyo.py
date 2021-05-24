@@ -51,7 +51,7 @@ class Flag:
         self.plate = True
         self.iou = 0.45
         self.score = 0.50
-        self.crop = True
+        self.crop = False
         self.output = None
         self.output_format = 'XVID'
 
