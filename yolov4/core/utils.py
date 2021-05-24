@@ -3,16 +3,22 @@ import random
 import colorsys
 import numpy as np
 import tensorflow as tf
+#import pandas as pd
 import pytesseract
 from core.config import cfg
 import re
 
-# If you don't have tesseract executable in your PATH, include the following:
+# If you don't have tesseract executable in your PATH, inc                                                                                                                                                                      lude the following:
 # pytesseract.pytesseract.tesseract_cmd = r'<full_path_to_your_tesseract_executable>'
 # Example tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract'
 
 # function to recognize license plate numbers using Tesseract OCR
 def recognize_plate(img, coords):
+    eng_text = ['a','b','c','d','e','f','g','h','i','h','k','l','m','n','o','p','q','r','s','t',
+    'u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
+    'R','S','T','U','V','W','X','Y','Z','é']
+    kor_cons_text = ['ㄱ','ㄴ','ㅁ','ㅂ','ㅅ','ㅇ']
+    kor_text = ['구','누','무','부','수','우']
     # separate coordinates from box
     xmin, ymin, xmax, ymax = coords
     box = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
@@ -51,7 +57,7 @@ def recognize_plate(img, coords):
     roi = cv2.medianBlur(roi,5)
     # create blank string to hold license plate number
     plate_num = ""
-    """
+    """#전체적으로 tesseract 진행
     cv2.imshow("",roi)
     cv2.waitKey(0)
     try:
@@ -61,6 +67,12 @@ def recognize_plate(img, coords):
     except:
         text = None
     """
+    cv2.imshow("1",roi)
+    cv2.waitKey(0)
+    seq = 1
+    #roi들의 height,y를 지니는 리스트
+    avgRectList= []
+    avgRectBool = False
     # loop through contours and find individual letters and numbers in license plate
     for cnt in sorted_contours:
         #print("sorted_contours =",len(sorted_contours))
@@ -68,20 +80,41 @@ def recognize_plate(img, coords):
         height, width = im2.shape
         #print("x=",x,"y =",y,"w=",w,"h=",h)
         # if height of box is not tall enough relative to total height then skip
-
+        print("height/h =",height/float(h),"height/w =",h/float(w),"width/w=",width/float(w),
+        "h*w=",h*w)
         if height / float(h) > 6: continue
 
         ratio = h / float(w)
         # if height to width ratio is less than 1.5 skip
-        if ratio < 1.5: continue
-
+        if avgRectBool == False:
+            if ratio < 0.7: continue #default = 1.5
+        else:
+            if ratio < 1.5: continue   #얘는 default 값을 추가한 것
+        
         # if width is not wide enough relative to total width then skip
         if width / float(w) > 20: continue# default = 15
-
         area = h * w
         # if area is less than 100 pixels skip
         if area < 100: continue
 
+        #seq == 3 즉, 한글일때 밑받침 때문에 평균 Rect 구하여 계산하기
+        if seq == 3:
+            print("before=",x,y,w,h)
+
+            print(avgRectList)
+            avgHeight = (avgRectList[0][0] + avgRectList[1][0]) /2
+            avgY = (avgRectList[0][1]+avgRectList[1][1]) / 2
+
+            print('avg=',avgHeight,'h=',h, 'avgY=',avgY,'y=',y)
+            #모음이나 자음만 divide 했을 경우
+            if avgHeight * 0.6 > h:
+                y = int(avgY)
+                h = int(avgHeight) + 10
+            
+        #continue가 되지 않은 w,h의 평균값을 저장하기
+        print(x,y,w,h)
+        avgRectList.append([h,y])
+        
         # draw the rectangle
         rect = cv2.rectangle(im2, (x,y), (x+w, y+h), (0,255,0),2)
         # grab character region of image
@@ -90,16 +123,55 @@ def recognize_plate(img, coords):
         roi = cv2.bitwise_not(roi)
         # perform another blur on character region
         roi = cv2.medianBlur(roi, 5)
+        cv2.imshow("roi",roi)
+        cv2.waitKey(0)
+        #확실한 config를 얻기 위한 리스트
+        #text_list = []         
+        #text2_list = []
         try:
+            cnf = '--psm 8 --oem 3'
+            #print(cnf)
+            text = pytesseract.image_to_string(roi, lang='kor', config=cnf)
+            text2 = pytesseract.image_to_string(roi, lang='eng', config="-c tessedit_char_whitelist=0123456789 "+cnf)
+
             #text = pytesseract.image_to_string(roi, config='-c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ --psm 8 --oem 3')
-            text = pytesseract.image_to_string(roi, lang='kor', config='--psm 8 --oem 3')
-            text2 = pytesseract.image_to_string(roi, lang='eng', config='--psm 8 --oem 3')
+            """
+            for i in range(7,9):
+                for j in range(0,3):
+                    try:
+                        cnf ='--psm ' + str(i) + ' --oem '+str(j)
+                        print(cnf)
+                        text = pytesseract.image_to_string(roi, lang='kor', config=cnf)
+                        text2 = pytesseract.image_to_string(roi, lang='eng', config="-c tessedit_char_whitelist=0123456789 "+cnf)
+                    except:
+                        continue
+                    print("kor =",text," eng =",text2)
+                    text_list.append(text.split("\\")[0])
+                    text2_list.append(text2.split("\\")[0])
+            
+            print(text_list)
+            print(text2_list)
+            """
+            
             #정규화랑, image_to_string에서 confidence를 제공하는가 확인해보기
-            #confidence는 쓰레쉬 홀드를 떨굴 수 있기 때문이다.
             # clean tesseract text by removing any unwanted blank spaces
             clean_text_kor = re.sub('[\W_]+', '', text)
             clean_text_eng = re.sub('[\W_]+', '', text2)
-            plate_num += clean_text_kor
+            if seq == 3:
+                if len(clean_text_kor) == 0:
+                    plate_num += clean_text_eng
+                elif clean_text_kor in kor_cons_text: #as
+                    plate_num += kor_text[kor_cons_text.index(clean_text_kor)]
+                else:
+                    plate_num += clean_text_kor
+            else:
+                if len(clean_text_eng) == 0 or clean_text_eng in eng_text or len(clean_text_eng)>1:
+                    plate_num += clean_text_kor
+                else:
+                    plate_num += clean_text_eng
+                
+
+            seq += 1  #eng, kor selecet instance
             print("clean_text_kor =", clean_text_kor)
             print("clean_text_eng =", clean_text_eng)
         except: 
@@ -239,7 +311,7 @@ def format_boxes(bboxes, image_height, image_width):
         box[0], box[1], box[2], box[3] = xmin, ymin, xmax, ymax
     return bboxes
 
-def draw_bbox(image, bboxes, info = False, counted_classes = None, show_label=True, allowed_classes=list(read_class_names(cfg.YOLO.CLASSES).values()), read_plate = True):
+def draw_bbox(image, bboxes, info = False, counted_classes = None, show_label=True, allowed_classes=list(read_class_names(cfg.YOLO.CLASSES).values()), read_plate = False):
     classes = read_class_names(cfg.YOLO.CLASSES)
     num_classes = len(classes)
     image_h, image_w, _ = image.shape
