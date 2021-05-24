@@ -61,8 +61,6 @@ def recognize_plate(img, coords):
     except:
         text = None
     """
-    cv2.imshow("1",roi)
-    cv2.waitKey(0)
     # loop through contours and find individual letters and numbers in license plate
     for cnt in sorted_contours:
         #print("sorted_contours =",len(sorted_contours))
@@ -92,8 +90,6 @@ def recognize_plate(img, coords):
         roi = cv2.bitwise_not(roi)
         # perform another blur on character region
         roi = cv2.medianBlur(roi, 5)
-        cv2.imshow("roi",roi)
-        cv2.waitKey(0)
         try:
             #text = pytesseract.image_to_string(roi, config='-c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ --psm 8 --oem 3')
             text = pytesseract.image_to_string(roi, lang='kor', config='--psm 8 --oem 3')
@@ -243,7 +239,7 @@ def format_boxes(bboxes, image_height, image_width):
         box[0], box[1], box[2], box[3] = xmin, ymin, xmax, ymax
     return bboxes
 
-def draw_bbox(image, bboxes, info = False, counted_classes = None, show_label=True, allowed_classes=list(read_class_names(cfg.YOLO.CLASSES).values()), read_plate = False):
+def draw_bbox(image, bboxes, info = False, counted_classes = None, show_label=True, allowed_classes=list(read_class_names(cfg.YOLO.CLASSES).values()), read_plate = True):
     classes = read_class_names(cfg.YOLO.CLASSES)
     num_classes = len(classes)
     image_h, image_w, _ = image.shape

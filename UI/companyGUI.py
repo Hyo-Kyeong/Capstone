@@ -183,14 +183,28 @@ class Ui_Dialog(object):
         camThread.start()
 
     def setWebCamPicture(self):
-        capture = cv2.VideoCapture(0)
         while True:
-            ret, frame = capture.read()
-            height, width = frame.shape[:2]
-            color_swap_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            qImg = QtGui.QImage(color_swap_image.data, width, height, color_swap_image.strides[0],
-                                QtGui.QImage.Format_RGB888)
-            self.carImage.setPixmap(QtGui.QPixmap.fromImage(qImg))
+            capture = cv2.VideoCapture('test_car.mp4')
+            # 프레임을 정수형으로 형 변환
+            frameWidth = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))  # 영상의 넓이(가로) 프레임
+            frameHeight = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))  # 영상의 높이(세로) 프레임
+
+            frame_size = (frameWidth, frameHeight)
+            print('frame_size={}'.format(frame_size))
+
+            frameRate = 33
+            while True:
+                ret, frame = capture.read()
+                if ret == False:
+                    break
+                height, width = frame.shape[:2]
+                color_swap_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                qImg = QtGui.QImage(color_swap_image.data, width, height, color_swap_image.strides[0],
+                                    QtGui.QImage.Format_RGB888)
+                pixmapImg = QtGui.QPixmap.fromImage(qImg)
+                resizedPixmapImg = pixmapImg.scaledToWidth(350)
+                self.carImage.setPixmap(resizedPixmapImg)
+                cv2.waitKey(frameRate)
 
     def setupPayList(self, Dialog):
         self.payListTable = QtWidgets.QTableWidget(Dialog)
