@@ -17,8 +17,7 @@ def recognize_plate(img, coords):
     eng_text = ['a','b','c','d','e','f','g','h','i','h','k','l','m','n','o','p','q','r','s','t',
     'u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
     'R','S','T','U','V','W','X','Y','Z','é']
-    kor_cons_text = ['ㄱ','ㄴ','ㅁ','ㅂ','ㅅ','ㅇ']
-    kor_text = ['구','누','무','부','수','우']
+
     # separate coordinates from box
     xmin, ymin, xmax, ymax = coords
     box = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
@@ -89,7 +88,8 @@ def recognize_plate(img, coords):
         if avgRectBool == False:
             if ratio < 0.7: continue #default = 1.5
         else:
-            if ratio < 1.5: continue   #얘는 default 값을 추가한 것
+            avgRectBool == True
+            if ratio < 0.85: continue   #얘는 default 값을 추가한 것
         
         # if width is not wide enough relative to total width then skip
         if width / float(w) > 20: continue# default = 15
@@ -99,6 +99,7 @@ def recognize_plate(img, coords):
 
         #seq == 3 즉, 한글일때 밑받침 때문에 평균 Rect 구하여 계산하기
         if seq == 3:
+            avgRectBool =True
             print("before=",x,y,w,h)
 
             print(avgRectList)
@@ -110,6 +111,7 @@ def recognize_plate(img, coords):
             if avgHeight * 0.6 > h:
                 y = int(avgY)
                 h = int(avgHeight) + 10
+            
             
         #continue가 되지 않은 w,h의 평균값을 저장하기
         print(x,y,w,h)
@@ -160,12 +162,11 @@ def recognize_plate(img, coords):
             if seq == 3:
                 if len(clean_text_kor) == 0:
                     plate_num += clean_text_eng
-                elif clean_text_kor in kor_cons_text: #as
-                    plate_num += kor_text[kor_cons_text.index(clean_text_kor)]
+
                 else:
                     plate_num += clean_text_kor
             else:
-                if len(clean_text_eng) == 0 or clean_text_eng in eng_text or len(clean_text_eng)>1:
+                if len(clean_text_eng) == 0 or clean_text_eng in eng_text:
                     plate_num += clean_text_kor
                 else:
                     plate_num += clean_text_eng
