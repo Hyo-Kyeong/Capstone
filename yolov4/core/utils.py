@@ -17,7 +17,8 @@ def recognize_plate(img, coords):
     eng_text = ['a','b','c','d','e','f','g','h','i','h','k','l','m','n','o','p','q','r','s','t',
     'u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
     'R','S','T','U','V','W','X','Y','Z','é']
-
+    white_list = ['거','너','더','러','머','버','서','어','저','모']
+    black_list = ['겨','녀','뎌','려','며','벼','셔','여','져','므']
     # separate coordinates from box
     xmin, ymin, xmax, ymax = coords
     box = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
@@ -66,12 +67,16 @@ def recognize_plate(img, coords):
     except:
         text = None
     """
+    ########################################################################################################################
     cv2.imshow("1",roi)
     cv2.waitKey(0)
     seq = 1
     #roi들의 height,y를 지니는 리스트
     avgRectList= []
     avgRectBool = False
+    #roi들의 width,x를 지니는 리스트
+    avgWidthList= []
+    
     # loop through contours and find individual letters and numbers in license plate
     for cnt in sorted_contours:
         #print("sorted_contours =",len(sorted_contours))
@@ -79,43 +84,62 @@ def recognize_plate(img, coords):
         height, width = im2.shape
         #print("x=",x,"y =",y,"w=",w,"h=",h)
         # if height of box is not tall enough relative to total height then skip
-        print("height/h =",height/float(h),"height/w =",h/float(w),"width/w=",width/float(w),
-        "h*w=",h*w)
-        if height / float(h) > 6: continue
+        #print("height/h =",height/float(h),"height/w =",h/float(w),"width/w=",width/float(w),"h*w=",h*w)
+        if height / float(h) > 6: 
+            #print("1 continue")
+            continue
 
         ratio = h / float(w)
         # if height to width ratio is less than 1.5 skip
         if avgRectBool == False:
-            if ratio < 0.7: continue #default = 1.5
+            if ratio < 0.6:  #0.7
+                #print("2'1 continue")
+                continue #default = 1.5
         else:
-            avgRectBool == True
-            if ratio < 0.85: continue   #얘는 default 값을 추가한 것
+            avgRectBool == False
+            if ratio < 0.9:
+                #print("2'2 continue")
+                continue   #얘는 default 값을 추가한 것
         
         # if width is not wide enough relative to total width then skip
-        if width / float(w) > 20: continue# default = 15
+        if width / float(w) > 22:
+            #print("3 continue")
+            continue# default = 15
         area = h * w
         # if area is less than 100 pixels skip
-        if area < 100: continue
+        if area < 100:
+            #print("4 continue")
+            continue
 
         #seq == 3 즉, 한글일때 밑받침 때문에 평균 Rect 구하여 계산하기
         if seq == 3:
             avgRectBool =True
-            print("before=",x,y,w,h)
+            #print("before=",x,y,w,h)
 
-            print(avgRectList)
-            avgHeight = (avgRectList[0][0] + avgRectList[1][0]) /2
+            #print(avgRectList,avgWidthList)
+            avgHeight = (avgRectList[0][0] + avgRectList[1][0]) / 2
+            avgWidth =(avgWidthList[0][0] + avgWidthList[1][0]) / 2
             avgY = (avgRectList[0][1]+avgRectList[1][1]) / 2
 
-            print('avg=',avgHeight,'h=',h, 'avgY=',avgY,'y=',y)
+            #print('avg=',avgHeight,'h=',h, 'avgY=',avgY,'y=',y)
             #모음이나 자음만 divide 했을 경우
             if avgHeight * 0.6 > h:
                 y = int(avgY)
-                h = int(avgHeight) + 10
+                h = int(avgHeight) + int(h*0.1)
+            #자음만 얻었을 때 옆에 붙는 모음이 안 나올 경우
+            if avgWidth * 0.8 > w or avgWidthList[1][0] * 0.8 > w or avgWidthList[0][0] * 0.8 > w:
+               #print("isWorking")
+                if avgWidthList[0][0] > avgWidthList[1][0]:
+                    w = int(avgWidthList[0][0]) + int(w*0.1)
+                else:
+                    w = int(avgWidthList[1][0]) + int(w*0.1)
+            
             
             
         #continue가 되지 않은 w,h의 평균값을 저장하기
         print(x,y,w,h)
         avgRectList.append([h,y])
+        avgWidthList.append([w,x])
         
         # draw the rectangle
         rect = cv2.rectangle(im2, (x,y), (x+w, y+h), (0,255,0),2)
@@ -125,8 +149,9 @@ def recognize_plate(img, coords):
         roi = cv2.bitwise_not(roi)
         # perform another blur on character region
         roi = cv2.medianBlur(roi, 5)
-        cv2.imshow("roi",roi)
-        cv2.waitKey(0)
+        #####################################################################################################
+        #cv2.imshow("roi",roi)
+        #cv2.waitKey(0)
         #확실한 config를 얻기 위한 리스트
         #text_list = []         
         #text2_list = []
@@ -157,8 +182,12 @@ def recognize_plate(img, coords):
             
             #정규화랑, image_to_string에서 confidence를 제공하는가 확인해보기
             # clean tesseract text by removing any unwanted blank spaces
-            clean_text_kor = re.sub('[\W_]+', '', text)
-            clean_text_eng = re.sub('[\W_]+', '', text2)
+            clean_text_kor = re.sub('[\W_+()ㆍ]', '', text)
+            clean_text_eng = re.sub('[\W_+()]', '', text2)
+            if clean_text_kor in black_list:
+                print("change =",clean_text_kor)
+                clean_text_kor = white_list[black_list.index(clean_text_kor)]
+                print("after =",clean_text_kor)
             if seq == 3:
                 if len(clean_text_kor) == 0:
                     plate_num += clean_text_eng
@@ -173,8 +202,8 @@ def recognize_plate(img, coords):
                 
 
             seq += 1  #eng, kor selecet instance
-            print("clean_text_kor =", clean_text_kor)
-            print("clean_text_eng =", clean_text_eng)
+            #print("clean_text_kor =", clean_text_kor)
+            #print("clean_text_eng =", clean_text_eng)
         except: 
             text = None
     
