@@ -16,8 +16,7 @@ public class MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-        Intent intent = getIntent();
-        member = (Member) intent.getSerializableExtra("Member");
+        member = Member.getInstance();
 
         TextView userID = (TextView)findViewById(R.id.textUserID3);
         userID.setText(member.getID()+"님");
@@ -25,32 +24,16 @@ public class MainPage extends AppCompatActivity {
 
     public void onClickRegister(View v){
         Intent myIntent = new Intent(getApplicationContext(), Register.class);
-        myIntent.putExtra("Member", member);
-        startActivityForResult(myIntent,0);
+        startActivity(myIntent);
     }
 
     public void onClickPayment(View v){
         Intent myIntent = new Intent(getApplicationContext(), PaymentHistory.class);
-        //myIntent.putExtra("Member", member);
         startActivity(myIntent);
     }
 
     public void onClickMyInformation(View v){
         Intent myIntent = new Intent(getApplicationContext(), MyInformation.class);
-        myIntent.putExtra("Member", member);
         startActivity(myIntent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 0:
-                if(resultCode==1){ finish();}
-                else {
-                    member = (Member) data.getSerializableExtra("Member");
-                    break;
-                }
-        }
     }
 }

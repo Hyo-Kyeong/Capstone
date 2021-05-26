@@ -1,12 +1,22 @@
 package com.example.spp_client;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +36,11 @@ public class PaymentHistory extends AppCompatActivity {
     private SimpleDateFormat dayFormat;
     private String year, month, day;
 
+    ListView listView;
+    ListViewAdapter adapter;
+
+    Response.Listener<String> responseListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +48,17 @@ public class PaymentHistory extends AppCompatActivity {
 
         initialize();
         initializeListener();
+
+        adapter = new ListViewAdapter();
+
+        listView = (ListView) findViewById(R.id.listview1);
+        listView.setAdapter(adapter);
+
     }
 
     public void initialize(){
+        member = Member.getInstance();
+
         currentTime = Calendar.getInstance().getTime();
         yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
         monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
@@ -77,6 +100,32 @@ public class PaymentHistory extends AppCompatActivity {
                 end.setText(year + "-" + _month + "-" + dayOfMonth);
             }
         };
+
+        responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    //JSONObject jsonResponse = new JSONObject(response);
+                    //String log = jsonResponse.getString("result");
+                    //System.out.println(log);
+
+                    int length= jsonArray.length();
+                    System.out.println("length : "+length);
+                    System.out.println(jsonArray.getString(2));
+                    for(int i=0;i<length;i++){
+                        String date = jsonArray.getJSONArray(2).getString(4*i);
+                        date = date.substring(0,10);
+                        String price = jsonArray.getJSONArray(2).getString(4*i+1);
+                        String store = jsonArray.getJSONArray(2).getString(4*i+3);
+                        adapter.addItem(date,store,price);
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     public void onStartClick(View v){
@@ -91,5 +140,12 @@ public class PaymentHistory extends AppCompatActivity {
     public void onClickLogout(View v){
         member = null;
         finish();
+    }
+
+    public void onClickSearch(View v){
+        //member.getID()
+        PaymentHistoryRequest registerRequest = new PaymentHistoryRequest("blue", start.getText().toString(), end.getText().toString(), responseListener);
+        RequestQueue queue = Volley.newRequestQueue(PaymentHistory.this);
+        queue.add(registerRequest);
     }
 }

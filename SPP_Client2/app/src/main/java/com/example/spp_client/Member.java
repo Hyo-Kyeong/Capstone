@@ -1,8 +1,12 @@
 package com.example.spp_client;
 
+import android.util.Printer;
+
 import java.io.Serializable;
 
 public class Member implements Serializable {
+    private static Member member = null;
+
     private String mBirth;
     private String mPhone;
     private String mID;
@@ -14,7 +18,7 @@ public class Member implements Serializable {
     private int mNo;
 
     //constructor
-    public Member(){
+   /* public Member(){
         mID="";
         mPW="";
         mBirth="";
@@ -36,7 +40,16 @@ public class Member implements Serializable {
         mValidDate="";
         mCVC="";
         mNo=0;
-    }
+    }*/
+   private Member(){
+   }
+
+   public static Member getInstance(){
+       if(member==null){
+           member = new Member();
+       }
+       return member;
+   }
 
     //getter/setter
     public String getBirth() {
