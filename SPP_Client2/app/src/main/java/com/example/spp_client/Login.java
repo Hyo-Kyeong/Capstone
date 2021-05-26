@@ -42,8 +42,16 @@ public class Login extends AppCompatActivity {
         EditText pw = (EditText)findViewById(R.id.editTextPW);
         if(id.getText().toString().matches(tmp_id)&&pw.getText().toString().matches(tmp_pw)) {
             Intent myIntent = new Intent(getApplicationContext(), MainPage.class);
-            Member member = new Member(id.getText().toString(),pw.getText().toString(),"19991111","01011111111");
-            myIntent.putExtra("Member", member);
+            Member member = Member.getInstance();
+            member.setID(id.getText().toString());
+            member.setPW(pw.getText().toString());
+            member.setBirth("19991111");
+            member.setPhone("01011111111");
+            member.setCarNo("");
+            member.setCardNo("");
+            member.setValidDate("");
+            member.setCVC("");
+            member.setNo(0);
             startActivity(myIntent);
         }
     }

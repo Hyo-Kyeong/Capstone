@@ -22,18 +22,12 @@ public class MyInformation extends AppCompatActivity {
     private EditText validDate;
     private Button cardInfoBtn;
 
-    Intent intent2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_information);
 
-
-        intent2 = new Intent();
-
-        Intent intent = getIntent();
-        member = (Member) intent.getSerializableExtra("Member");
+        member = Member.getInstance();
         TextView userID = (TextView)findViewById(R.id.textUserID2);
         userID.setText(member.getID()+"님");
         userID = (TextView)findViewById(R.id.TextprintID);
@@ -56,14 +50,6 @@ public class MyInformation extends AppCompatActivity {
         userCVC.setText(member.getCVC());
         TextView userCardValid = (TextView)findViewById(R.id.TextprintCV);
         userCardValid.setText(member.getValidDate());
-
-
-
-
-
-
-
-
 
     }
 }

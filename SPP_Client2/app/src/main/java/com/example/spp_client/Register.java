@@ -31,17 +31,12 @@ public class Register extends AppCompatActivity {
 
     Response.Listener<String> responseListener;
 
-    Intent intent2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        intent2 = new Intent();
-
-        Intent intent = getIntent();
-        member = (Member) intent.getSerializableExtra("Member");
+        member = Member.getInstance();
         TextView userID = (TextView)findViewById(R.id.textUserID);
         userID.setText(member.getID()+"님");
 
@@ -106,10 +101,6 @@ public class Register extends AppCompatActivity {
 
     public void onClickLogout(View v){
         member = null;
-        setResult(1);
-        IdCheckRequest registerRequest = new IdCheckRequest(member.getID(), responseListener);
-        RequestQueue queue = Volley.newRequestQueue(Register.this);
-        queue.add(registerRequest);
         finish();
     }
 
@@ -122,8 +113,6 @@ public class Register extends AppCompatActivity {
             carNo.setEnabled(false);
             carInfoBtn.setText("수정");
             member.setCarNo(carNo.getText().toString());
-            intent2.putExtra("Member", member);
-            setResult(0, intent2);
         }
         else if(carInfoBtn.getText().toString().equals("수정")){
             carNo.setEnabled(true);
@@ -133,8 +122,6 @@ public class Register extends AppCompatActivity {
             carNo.setEnabled(false);
             carInfoBtn.setText("수정");
             member.setCarNo(carNo.getText().toString());
-            intent2.putExtra("Member", member);
-            setResult(0, intent2);
         }
     }
 
@@ -153,8 +140,6 @@ public class Register extends AppCompatActivity {
             member.setCardNo(cardNo.getText().toString());
             member.setCVC(cvc.getText().toString());
             member.setValidDate(validDate.getText().toString());
-            intent2.putExtra("Member", member);
-            setResult(0, intent2);
         }
         else if(cardInfoBtn.getText().toString().equals("수정")){
             cardNo.setEnabled(true);
@@ -172,8 +157,6 @@ public class Register extends AppCompatActivity {
             member.setCardNo(cardNo.getText().toString());
             member.setCVC(cvc.getText().toString());
             member.setValidDate(validDate.getText().toString());
-            intent2.putExtra("Member", member);
-            setResult(0, intent2);
         }
     }
 }
