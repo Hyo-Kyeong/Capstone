@@ -17,8 +17,8 @@ def recognize_plate(img, coords):
     eng_text = ['a','b','c','d','e','f','g','h','i','h','k','l','m','n','o','p','q','r','s','t',
     'u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
     'R','S','T','U','V','W','X','Y','Z','é']
-    white_list = ['거','너','더','러','머','버','서','어','저','모','누','너']
-    black_list = ['겨','녀','뎌','려','며','벼','셔','여','져','므','뉴','넌']
+    white_list = ['거','너','더','러','머','버','서','어','저','모','누','너','보']
+    black_list = ['겨','녀','뎌','려','며','벼','셔','여','져','므','뉴','넌','브']
     # separate coordinates from box
     xmin, ymin, xmax, ymax = coords
     box = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
@@ -150,8 +150,8 @@ def recognize_plate(img, coords):
         # perform another blur on character region
         roi = cv2.medianBlur(roi, 5)
         #####################################################################################################
-        #cv2.imshow("roi",roi)
-        #cv2.waitKey(0)
+        cv2.imshow("roi",roi)
+        cv2.waitKey(0)
         #확실한 config를 얻기 위한 리스트
         #text_list = []         
         #text2_list = []
