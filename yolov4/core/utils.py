@@ -17,8 +17,8 @@ def recognize_plate(img, coords):
     eng_text = ['a','b','c','d','e','f','g','h','i','h','k','l','m','n','o','p','q','r','s','t',
     'u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
     'R','S','T','U','V','W','X','Y','Z','é']
-    white_list = ['거','너','더','러','머','버','서','어','저','모']
-    black_list = ['겨','녀','뎌','려','며','벼','셔','여','져','므']
+    white_list = ['거','너','더','러','머','버','서','어','저','모','누']
+    black_list = ['겨','녀','뎌','려','며','벼','셔','여','져','므','뉴']
     # separate coordinates from box
     xmin, ymin, xmax, ymax = coords
     box = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
