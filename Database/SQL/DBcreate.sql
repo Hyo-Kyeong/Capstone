@@ -22,6 +22,7 @@ CREATE TABLE SPP_USER (
   phone VARCHAR(11),
   card VARCHAR(12),
   car VARCHAR(10),
+  birth INTEGER,
   FOREIGN KEY (card) REFERENCES CARD(card)
 );
 

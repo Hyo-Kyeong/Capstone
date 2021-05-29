@@ -239,7 +239,9 @@ def OCR(image):
 if __name__ == '__main__':
     # image=cv2.imread('./data/images/car6(2).png')
     # OCR(image)
-    path = 'C:/Users/user01/Desktop/박상민/OneDrive_2021-03-29/KarPlate Dataset/Subset EER/images'
-    img_list = os.listdir(path)
-    for image in img_list:
-        detectPlate(path+'/'+image)
+    # path = 'C:/Users/user01/Desktop/박상민/OneDrive_2021-03-29/KarPlate Dataset/Subset EER/images'
+    # img_list = os.listdir(path)
+    # for image in img_list:
+    #     detectPlate(path+'/'+image)
+    detectPlate('car6.png')
+

@@ -3,17 +3,23 @@ insert into CARD(card, expiration_month, expiration_year, cvc) values('111122223
 insert into CARD(card, expiration_month, expiration_year, cvc) values('444455556666', 12, 21, 342);
 insert into CARD(card, expiration_month, expiration_year, cvc) values('777788889999', 9, 20, 654);
 insert into CARD(card, expiration_month, expiration_year, cvc) values('000022223333', 4, 25, 776);
+insert into CARD(card, expiration_month, expiration_year, cvc) values('610933327653', 10, 24, 283);
+insert into CARD(card, expiration_month, expiration_year, cvc) values('338271735594', 5, 22, 109);
+insert into CARD(card, expiration_month, expiration_year, cvc) values('300284496750', 8, 28, 442);
 
+insert into SPP_USER(id, pw, name, phone, birth) values('root', 'root', '관리자', '01012344321', 19701201);
+insert into SPP_USER(id, pw, name, phone, birth) values('nbgreen', 'hihi', '김효경', '01055554444', 19990614);
+insert into SPP_USER(id, pw, name, phone, birth) values('apple', 'apple', '김사과', '01022213323', 19980223);
+insert into SPP_USER(id, pw, name, phone, birth) values('banana', 'banana', '반아나', '01056789087', 20010809);
+insert into SPP_USER(id, pw, name, phone, birth) values('orange', 'orange', '오렌지', '01032345465', 20001018);
+insert into SPP_USER(id, pw, name, phone, birth, card, car) values('blue', 'blue', '이파랑', '01029393847', 20210417, '111122223333', '88가1234');
+insert into SPP_USER(id, pw, name, phone, birth, card, car) values('capstone', 'capstone', '최스톤', '01056473829', 19970904, '444455556666', '54수1255');
+insert into SPP_USER(id, pw, name, phone, birth, card, car) values('sejong', 'sejong', '박세종', '01029386654', 19961214, '777788889999', '67우8988');
+insert into SPP_USER(id, pw, name, phone, birth, card, car) values('spp', 'spp', '시스템', '01055678902', 19950529, '000022223333', '31나5522');
+insert into SPP_USER(id, pw, name, phone, birth, card, car) values('sejongCar', 'sejongCar', '정세카', 19880723, '19990707', '610933327653', '14루3012');
+insert into SPP_USER(id, pw, name, phone, birth, card, car) values('sonnim', 'sonnim', '최손님', '01029934423', 19990502, '338271735594', '54구7399');
+insert into SPP_USER(id, pw, name, phone, birth, card, car) values('gogack', 'gogcak', '나고객', '01033258907', 19780910, '300284496750', '24허0161');
 
-insert into SPP_USER(id, pw, name, phone) values('root', 'root', '관리자', '01012344321');
-insert into SPP_USER(id, pw, name, phone) values('nbgreen', 'hihi', '김효경', '01055554444');
-insert into SPP_USER(id, pw, name, phone) values('apple', 'apple', '김사과', '01022213323');
-insert into SPP_USER(id, pw, name, phone) values('banana', 'banana', '반아나', '01056789087');
-insert into SPP_USER(id, pw, name, phone) values('orange', 'orange', '오렌지', '01032345465');
-insert into SPP_USER(id, pw, name, phone, card, car) values('blue', 'blue', '이파랑', '01029393847', '111122223333', '88가1234');
-insert into SPP_USER(id, pw, name, phone, card, car) values('capstone', 'capstone', '최스톤', '01056473829', '444455556666', '54수1255');
-insert into SPP_USER(id, pw, name, phone, card, car) values('sejong', 'sejong', '박세종', '01029386654', '777788889999', '67우8988');
-insert into SPP_USER(id, pw, name, phone, card, car) values('spp', 'spp', '시스템', '01055678902', '000022223333', '31나5522');
 
 insert into PAYMENT_HISTORY(pay_date, payment, user_id, card, car, place) values('2021-05-18 12:00:11', 12000, 6, '111122223333', '88가1234', 'twosome');
 insert into PAYMENT_HISTORY(pay_date, payment, user_id, card, car, place) values('2021-05-18 12:05:31', 8000, 6, '111122223333', '88가1234', 'sejong');
@@ -28,5 +34,8 @@ insert into PAYMENT_HISTORY(pay_date, payment, user_id, card, car, place) values
 insert into PAYMENT_HISTORY(pay_date, payment, user_id, card, car, place) values('2021-07-12 12:51:37', 62100, 9, '000022223333', '31나5522', 'lg');
 insert into PAYMENT_HISTORY(pay_date, payment, user_id, card, car, place) values('2021-07-20 13:44:52', 5500, 9, '000022223333', '31나5522', 'bugerking');
 
+insert into PAYMENT_HISTORY(pay_date, payment, car, place) values('2020-05-23 15:03:01', 22000, null, 'Sejong Cafe');
+insert into PAYMENT_HISTORY(pay_date, payment, car, place) values(now(), 5500, '123가3333', 'Sejong Cafe');
+insert into PAYMENT_HISTORY(pay_date, payment, user_id, card, car, place) values('2021-05-18 12:00:11', 12000, 6, '111122223333', '88가1234', 'Sejong Cafe');
 
 
