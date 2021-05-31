@@ -112,7 +112,7 @@ def recognize_plate(img, coords):
             continue
 
         #seq == 3 즉, 한글일때 밑받침 때문에 평균 Rect 구하여 계산하기
-        if seq == 3:
+        if seq == 4:  #4일때는 3글자일때만
             avgRectBool =True
             #print("before=",x,y,w,h)
 
