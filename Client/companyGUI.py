@@ -29,8 +29,8 @@ class Ui_Dialog(object):
         self.menuText = ["아메리카노\n""4000", "카페라떼\n""5000", "바나나라떼\n""5000", "헤이즐넛\n""4500", "카라멜라떼\n""5500", "민트초코\n""5500", "녹차\n""4000", "케이크\n""6000", "쿠키\n""3500"]
 
 
-    def setupTitle(self, Dialog):
-        self.palceLabel = QtWidgets.QLabel(Dialog)
+    def setupTitle(self):
+        self.palceLabel = QtWidgets.QLabel(self.Dialog)
         self.palceLabel.setGeometry(QtCore.QRect(170, 30, 801, 71))
         font = QtGui.QFont()
         font.setPointSize(28)
@@ -40,8 +40,8 @@ class Ui_Dialog(object):
         self.palceLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.palceLabel.setObjectName("palceLabel")
 
-    def setupMenu(self, Dialog):
-        self.layoutWidget = QtWidgets.QWidget(Dialog)
+    def setupMenu(self):
+        self.layoutWidget = QtWidgets.QWidget(self.Dialog)
         self.layoutWidget.setGeometry(QtCore.QRect(60, 150, 631, 241))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
@@ -106,8 +106,8 @@ class Ui_Dialog(object):
 
 
 
-    def setupPayHistory(self, Dialog):
-        self.payHistoryTable = QtWidgets.QTableWidget(Dialog)
+    def setupPayHistory(self):
+        self.payHistoryTable = QtWidgets.QTableWidget(self.Dialog)
         self.payHistoryTable.setGeometry(QtCore.QRect(500, 430, 561, 361))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -150,8 +150,8 @@ class Ui_Dialog(object):
         self.timer.start(1000)
 
 
-    def setupCar(self, Dialog):
-        self.layoutWidget_3 = QtWidgets.QWidget(Dialog)
+    def setupCar(self):
+        self.layoutWidget_3 = QtWidgets.QWidget(self.Dialog)
         self.layoutWidget_3.setGeometry(QtCore.QRect(730, 150, 321, 240))
         self.layoutWidget_3.setObjectName("layoutWidget_3")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.layoutWidget_3)
@@ -179,40 +179,26 @@ class Ui_Dialog(object):
         self.carImage.setObjectName("carImage")
         self.gridLayout_5.addWidget(self.carImage, 0, 0, 1, 1)
 
-        camThread = threading.Thread(target=self.setCarVideo)
+        camThread = threading.Thread(target=self.detectCarPlate)
         camThread.start()
 
-    def setCarVideo(self):
-        carPlateNum = detect_video_hyo.detectPlate(self, 'test_car_Trim.mp4')
+    def detectCarPlate(self):
+        detect_video_hyo.detectPlate(self, 'test_car4.mp4')
+
+    def setCarVideoImage(self, frame, carPlateNum):
+        height, width = frame.shape[:2]
+        color_swap_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        qImg = QtGui.QImage(frame.data, width, height, frame.strides[0],
+                            QtGui.QImage.Format_RGB888)
+        pixmapImg = QtGui.QPixmap.fromImage(qImg)
+        resizedPixmapImg = pixmapImg.scaledToWidth(350)
+        self.carImage.setPixmap(resizedPixmapImg)
+
         self.carNum.setText(carPlateNum)
-        '''
-        while True:
-            capture = cv2.VideoCapture('test_car.mp4')
-            # 프레임을 정수형으로 형 변환
-            frameWidth = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))  # 영상의 넓이(가로) 프레임
-            frameHeight = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))  # 영상의 높이(세로) 프레임
-
-            frame_size = (frameWidth, frameHeight)
-            print('frame_size={}'.format(frame_size))
-
-            frameRate = 33
-            while True:
-                ret, frame = capture.read()
-                if ret == False:
-                    break
-                height, width = frame.shape[:2]
-                color_swap_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                qImg = QtGui.QImage(color_swap_image.data, width, height, color_swap_image.strides[0],
-                                    QtGui.QImage.Format_RGB888)
-                pixmapImg = QtGui.QPixmap.fromImage(qImg)
-                resizedPixmapImg = pixmapImg.scaledToWidth(350)
-                self.carImage.setPixmap(resizedPixmapImg)
-                cv2.waitKey(frameRate)
-        '''
 
 
-    def setupPayList(self, Dialog):
-        self.payListTable = QtWidgets.QTableWidget(Dialog)
+    def setupPayList(self):
+        self.payListTable = QtWidgets.QTableWidget(self.Dialog)
         self.payListTable.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.payListTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.payListTable.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
@@ -237,8 +223,8 @@ class Ui_Dialog(object):
         self.payListTable.horizontalScrollBar().setDisabled(True)
         self.payListTable.horizontalScrollBar().setVisible(False)
 
-    def setupPay(self, Dialog):
-        self.widget = QtWidgets.QWidget(Dialog)
+    def setupPay(self):
+        self.widget = QtWidgets.QWidget(self.Dialog)
         self.widget.setGeometry(QtCore.QRect(100, 750, 364, 26))
         self.widget.setObjectName("widget")
 
@@ -263,18 +249,25 @@ class Ui_Dialog(object):
         self.payButton = QtWidgets.QPushButton(self.widget)
         self.payButton.setObjectName("payButton")
         self.gridLayout_2.addWidget(self.payButton, 0, 1, 1, 1)
-        self.payButton.clicked.connect(lambda : self.payBtnClicked(Dialog))
+        self.payButton.clicked.connect(self.payBtnClicked)
 
         self.cancleButton = QtWidgets.QPushButton(self.widget)
         self.cancleButton.setObjectName("cancleButton")
         self.gridLayout_2.addWidget(self.cancleButton, 0, 2, 1, 1)
         self.cancleButton.clicked.connect(self.cancelBtnClicked)
 
-    def payBtnClicked(self, Dialog):
+    def payBtnClicked(self):
+        print("pay")
         result = DB.self_pay(self.sum, self.carNum.text(), self.company_name)
+        print("success")
         if result == False:
             print("실패")
-            QtWidgets.QMessageBox.about(Dialog, "결제실패", "해당유저에 등록된 카드가 없습니다.")
+            QtWidgets.QMessageBox.about(self.Dialog, "결제실패", "해당유저에 등록된 카드가 없습니다.")
+        else:
+            self.payListTable.setRowCount(0)
+            self.payListTable.clearContents()
+            self.sum = 0
+            self.carNum.setText('')
 
     def cancelBtnClicked(self):
         remove_row = self.payListTable.selectedIndexes()[0].row()
@@ -283,34 +276,35 @@ class Ui_Dialog(object):
         self.payListTable.removeRow(remove_row)
 
     def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(1135, 837)
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        self.Dialog.resize(1135, 837)
         self.setupText()
-        self.setupTitle(Dialog)
-        self.setupPayHistory(Dialog)
-        self.setupCar(Dialog)
-        self.setupPayList(Dialog)
-        self.setupMenu(Dialog)
-        self.setupPay(Dialog)
+        self.setupTitle()
+        self.setupPayHistory()
+        self.setupCar()
+        self.setupPayList()
+        self.setupMenu()
+        self.setupPay()
 
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self.Dialog)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.Dialog.setWindowTitle(_translate("SPP SYSTEM", "SPP SYSTEM"))
         # for i in range(0, 9):
-        #     self.menuBtn[i].setText(_translate("Dialog", self.menuText[i]))
-        # self.menuBtn[0].setText(_translate("Dialog", "아메리카노\n""4000"))
-        # self.menuBtn[1].setText(_translate("Dialog", "카페라떼\n""5000"))
-        # self.menuBtn[2].setText(_translate("Dialog", "바나나라떼\n""5000"))
-        # self.menuBtn[3].setText(_translate("Dialog", "헤이즐넛\n""4500"))
-        # self.menuBtn[4].setText(_translate("Dialog", "카라멜라떼\n""5500"))
-        # self.menuBtn[5].setText(_translate("Dialog", "민트초코\n""5500"))
-        # self.menuBtn[6].setText(_translate("Dialog", "녹차\n""4000"))
-        # self.menuBtn[7].setText(_translate("Dialog", "케이크\n""6000"))
-        # self.menuBtn[8].setText(_translate("Dialog", "쿠키\n""3500"))
+        #     self.menuBtn[i].setText(_translate("self.Dialog", self.menuText[i]))
+        # self.menuBtn[0].setText(_translate("self.Dialog", "아메리카노\n""4000"))
+        # self.menuBtn[1].setText(_translate("self.Dialog", "카페라떼\n""5000"))
+        # self.menuBtn[2].setText(_translate("self.Dialog", "바나나라떼\n""5000"))
+        # self.menuBtn[3].setText(_translate("self.Dialog", "헤이즐넛\n""4500"))
+        # self.menuBtn[4].setText(_translate("self.Dialog", "카라멜라떼\n""5500"))
+        # self.menuBtn[5].setText(_translate("self.Dialog", "민트초코\n""5500"))
+        # self.menuBtn[6].setText(_translate("self.Dialog", "녹차\n""4000"))
+        # self.menuBtn[7].setText(_translate("self.Dialog", "케이크\n""6000"))
+        # self.menuBtn[8].setText(_translate("self.Dialog", "쿠키\n""3500"))
         item = self.payHistoryTable.horizontalHeaderItem(0)
         item.setText(_translate("Dialog", "결제시간"))
         item = self.payHistoryTable.horizontalHeaderItem(1)
@@ -330,6 +324,10 @@ class Ui_Dialog(object):
         self.cancleButton.setText(_translate("Dialog", "취소"))
         self.sumLabel.setText(_translate("Dialog", "합계: "))
         self.palceLabel.setText(_translate("Dialog", "Sejong Cafe"))
+
+        pixmap = QtGui.QPixmap('logo.png')
+        resizedPixmapImg = pixmap.scaledToWidth(350)
+        self.carImage.setPixmap(resizedPixmapImg)
 
 
     def test(self):
