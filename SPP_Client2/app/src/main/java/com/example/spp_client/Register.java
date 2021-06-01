@@ -24,7 +24,6 @@ public class Register extends AppCompatActivity {
     private Button carInfoBtn;
 
     private EditText cardNo;
-    private EditText cardCompany;
     private EditText cvc;
     private EditText validDate;
     private Button cardInfoBtn;
@@ -49,7 +48,6 @@ public class Register extends AppCompatActivity {
         }
 
         cardNo = (EditText)findViewById(R.id.editTextCardNo);
-        cardCompany = (EditText)findViewById(R.id.editTextCardCompany);
         cvc = (EditText)findViewById(R.id.editTextCVC);
         validDate = (EditText)findViewById(R.id.editTextValidDate);
         cardInfoBtn = (Button)findViewById(R.id.cardInfoBtn);
@@ -58,7 +56,6 @@ public class Register extends AppCompatActivity {
             cvc.setText(member.getCVC());
             validDate.setText(member.getValidDate());
             cardNo.setEnabled(false);
-            cardCompany.setEnabled(false);
             cvc.setEnabled(false);
             validDate.setEnabled(false);
             cardInfoBtn.setText("수정");
@@ -101,6 +98,9 @@ public class Register extends AppCompatActivity {
 
     public void onClickLogout(View v){
         member = null;
+        Intent myIntent = new Intent(getApplicationContext(), Login.class);
+        myIntent.addFlags(myIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(myIntent);
         finish();
     }
 
@@ -133,7 +133,6 @@ public class Register extends AppCompatActivity {
             queue.add(registerRequest);
 
             cardNo.setEnabled(false);
-            cardCompany.setEnabled(false);
             cvc.setEnabled(false);
             validDate.setEnabled(false);
             cardInfoBtn.setText("수정");
@@ -143,14 +142,12 @@ public class Register extends AppCompatActivity {
         }
         else if(cardInfoBtn.getText().toString().equals("수정")){
             cardNo.setEnabled(true);
-            cardCompany.setEnabled(true);
             cvc.setEnabled(true);
             validDate.setEnabled(true);
             cardInfoBtn.setText("확인");
         }
         else if(cardInfoBtn.getText().toString().equals("확인")){
             cardNo.setEnabled(false);
-            cardCompany.setEnabled(false);
             cvc.setEnabled(false);
             validDate.setEnabled(false);
             cardInfoBtn.setText("수정");

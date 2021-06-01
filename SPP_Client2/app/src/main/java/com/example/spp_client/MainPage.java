@@ -36,4 +36,12 @@ public class MainPage extends AppCompatActivity {
         Intent myIntent = new Intent(getApplicationContext(), MyInformation.class);
         startActivity(myIntent);
     }
+
+    public void onClickLogout(View v){
+        member = null;
+        Intent myIntent = new Intent(getApplicationContext(), Login.class);
+        myIntent.addFlags(myIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(myIntent);
+        finish();
+    }
 }

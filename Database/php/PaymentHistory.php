@@ -4,7 +4,7 @@
 
     include('DBconn.php');
 
-    $stmt = mysqli_prepare($con, "SELECT PH.pay_date, PH.payment, PH.car, PH.place FROM PAYMENT_HISTORY PH INNER JOIN SPP_USER U on PH.user_id = U.user_id where U.id = ? and PH.pay_date BETWEEN ? and ?");
+    $stmt = mysqli_prepare($con, "SELECT PH.pay_date, PH.payment, PH.car, PH.place FROM PAYMENT_HISTORY PH INNER JOIN SPP_USER U on PH.user_id = U.user_id where U.id = ? and PH.pay_date BETWEEN ? and ? order by PH.pay_date");
 
     mysqli_stmt_bind_param($stmt, "sss", $ID, $START_DATE, $END_DATE);
 
