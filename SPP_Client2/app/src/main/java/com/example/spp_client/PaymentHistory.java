@@ -145,8 +145,6 @@ public class PaymentHistory extends AppCompatActivity {
                     //System.out.println(log);
 
                     int length= jsonArray.length();
-                    System.out.println("length : "+length);
-                    System.out.println(jsonArray.getString(length-1));
                     for(int i=0;i<length;i++){
                         String date = jsonArray.getJSONArray(length-1).getString(4*i);
                         date = date.substring(0,10);

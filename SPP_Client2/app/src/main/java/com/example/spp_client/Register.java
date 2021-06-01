@@ -25,7 +25,8 @@ public class Register extends AppCompatActivity {
 
     private EditText cardNo;
     private EditText cvc;
-    private EditText validDate;
+    private EditText validMonth;
+    private EditText validYear;
     private Button cardInfoBtn;
 
     Response.Listener<String> responseListener;
@@ -49,15 +50,18 @@ public class Register extends AppCompatActivity {
 
         cardNo = (EditText)findViewById(R.id.editTextCardNo);
         cvc = (EditText)findViewById(R.id.editTextCVC);
-        validDate = (EditText)findViewById(R.id.editTextValidDate);
+        validMonth = (EditText)findViewById(R.id.editTextMonth);
+        validYear = (EditText)findViewById(R.id.editTextYear);
         cardInfoBtn = (Button)findViewById(R.id.cardInfoBtn);
         if(!member.getCardNo().equals("")){
             cardNo.setText(member.getCardNo());
             cvc.setText(member.getCVC());
-            validDate.setText(member.getValidDate());
+            validMonth.setText(member.getValidDate().substring(0,2));
+            validYear.setText(member.getValidDate().substring(3,5));
             cardNo.setEnabled(false);
             cvc.setEnabled(false);
-            validDate.setEnabled(false);
+            validMonth.setEnabled(false);
+            validYear.setEnabled(false);
             cardInfoBtn.setText("수정");
         }
 
@@ -127,33 +131,36 @@ public class Register extends AppCompatActivity {
 
     public void onClickCardInfoBtn(View v){
         if(cardInfoBtn.getText().toString().equals("등록")){
-            CardRegisterRequest registerRequest = new CardRegisterRequest(member.getID(), cardNo.getText().toString(), validDate.getText().toString().substring(0,2),
-                    validDate.getText().toString().substring(3,5), cvc.getText().toString(), responseListener);
+            CardRegisterRequest registerRequest = new CardRegisterRequest(member.getID(), cardNo.getText().toString(), validMonth.getText().toString().substring(0,2),
+                    validYear.getText().toString().substring(3,5), cvc.getText().toString(), responseListener);
             RequestQueue queue = Volley.newRequestQueue(Register.this);
             queue.add(registerRequest);
 
             cardNo.setEnabled(false);
             cvc.setEnabled(false);
-            validDate.setEnabled(false);
+            validMonth.setEnabled(false);
+            validYear.setEnabled(false);
             cardInfoBtn.setText("수정");
             member.setCardNo(cardNo.getText().toString());
             member.setCVC(cvc.getText().toString());
-            member.setValidDate(validDate.getText().toString());
+            member.setValidDate(validMonth.getText().toString()+"/"+validYear.getText().toString());
         }
         else if(cardInfoBtn.getText().toString().equals("수정")){
             cardNo.setEnabled(true);
             cvc.setEnabled(true);
-            validDate.setEnabled(true);
+            validMonth.setEnabled(true);
+            validYear.setEnabled(true);
             cardInfoBtn.setText("확인");
         }
         else if(cardInfoBtn.getText().toString().equals("확인")){
             cardNo.setEnabled(false);
             cvc.setEnabled(false);
-            validDate.setEnabled(false);
+            validMonth.setEnabled(false);
+            validYear.setEnabled(false);
             cardInfoBtn.setText("수정");
             member.setCardNo(cardNo.getText().toString());
             member.setCVC(cvc.getText().toString());
-            member.setValidDate(validDate.getText().toString());
+            member.setValidDate(validMonth.getText().toString()+"/"+validYear.getText().toString());
         }
     }
 }

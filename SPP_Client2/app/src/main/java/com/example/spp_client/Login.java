@@ -25,7 +25,7 @@ public class Login extends AppCompatActivity {
     Response.Listener<String> responseListener;
     Response.Listener<String> responseListener2;
 
-    String name, birth, phone;
+    String name, birth, phone, car, card, cvc, exp_year, exp_month;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity {
                     JSONObject jsonResponse = new JSONObject(response);
                     Integer login = jsonResponse.getInt("login");
                     if (login==1) {
-                        Intent myIntent = new Intent(getApplicationContext(), MainPage.class);
+
                         Member member = Member.getInstance();
                         member.setID(id.getText().toString());
                         member.setPW(pw.getText().toString());
@@ -51,33 +51,41 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onResponse(String response) {
                                 try {
+                                    Intent myIntent = new Intent(getApplicationContext(), MainPage.class);
                                     JSONObject jsonResponse = new JSONObject(response);
                                     name = jsonResponse.getString("name");
                                     birth = jsonResponse.getString("birth");
                                     phone = jsonResponse.getString("phone");
+                                    car = jsonResponse.getString("car");
+                                    card = jsonResponse.getString("card");
+                                    cvc = jsonResponse.getString("cvc");
+                                    exp_year = jsonResponse.getString("exp_year");
+                                    exp_month = jsonResponse.getString("exp_month");
 
                                     Member member = Member.getInstance();
                                     member.setName(name);
                                     member.setBirth(birth);
                                     member.setPhone(phone);
-                                    member.setCarNo("");
-                                    member.setCardNo("");
-                                    member.setValidDate("");
-                                    member.setCVC("");
-                                    //member.setNo(0);
+                                    if(car.matches("null")) car="";
+                                    if(card.matches("null")) card="";
+                                    if(cvc.matches("null")) cvc="";
+                                    member.setCarNo(car);
+                                    member.setCardNo(card);
+                                    if(exp_month.matches("null")&&exp_year.matches("null")) member.setValidDate("");
+                                    else member.setValidDate(exp_month+"/"+exp_year);
+                                    member.setCVC(cvc);
 
+                                    startActivity(myIntent);
+                                    finish();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                         };
 
-                        SelectInfoRequest request2 = new SelectInfoRequest(id.getText().toString(), pw.getText().toString(), responseListener2);
+                        SelectInfoRequest request2 = new SelectInfoRequest(id.getText().toString(), responseListener2);
                         RequestQueue queue2 = Volley.newRequestQueue(Login.this);
                         queue2.add(request2);
-
-                        startActivity(myIntent);
-                        finish();
                     }
                     else {
                         Toast.makeText(Login.this, "아이디 혹은 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show();

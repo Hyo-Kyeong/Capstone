@@ -22,21 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
         android:layout_marginTop="20dp"
         android:text="카드번호"
         app:layout_constraintStart_toEndOf="@+id/printCardNum"
-        app:layout_constraintTop_toBottomOf="@+id/TextprintCC" />
-
-    <TextView
-        android:id="@+id/TextprintCC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="20dp"
-        android:text="카드사"
-        app:layout_constraintStart_toEndOf="@+id/printCC"
         app:layout_constraintTop_toBottomOf="@+id/TextprintCarNum" />
 
     <TextView
@@ -131,21 +119,9 @@
         android:id="@+id/printCardNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
         android:text="카드번호   :"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/printCC" />
-
-    <TextView
-        android:id="@+id/printCC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:text="카드사       :"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/printCarNum" />
 

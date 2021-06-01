@@ -6,11 +6,11 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SelectInfoRequest extends StringRequest {
-    final static private String URL = "http://spp.dothome.co.kr/SelectInfo.php";
+public class PaymentHistoryInMainRequest extends StringRequest {
+    final static private String URL = "http://spp.dothome.co.kr/PaymentHistoryInMain.php";
     private Map<String, String> parameters;
 
-    public SelectInfoRequest(String id,  Response.Listener<String> listener) {
+    public PaymentHistoryInMainRequest(String id, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
         parameters = new HashMap<>();
         parameters.put("id", id);
@@ -20,5 +20,4 @@ public class SelectInfoRequest extends StringRequest {
     public Map<String, String> getParams() {
         return parameters;
     }
-
 }

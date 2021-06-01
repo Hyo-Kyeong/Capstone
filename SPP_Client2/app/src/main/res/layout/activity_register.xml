@@ -183,8 +183,8 @@
         android:layout_marginBottom="33dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editTextValidDate"
-        app:layout_constraintStart_toStartOf="@+id/editTextValidDate" />
+        app:layout_constraintBottom_toTopOf="@+id/editTextMonth"
+        app:layout_constraintStart_toStartOf="@+id/editTextMonth" />
 
     <TextView
         android:id="@+id/textView15"
@@ -203,17 +203,18 @@
         android:layout_marginStart="26dp"
         android:layout_marginLeft="26dp"
         android:text="유효 기간"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextValidDate"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextMonth"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextValidDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/editTextMonth"
+        android:layout_width="73dp"
+        android:layout_height="46dp"
         android:layout_marginStart="29dp"
         android:layout_marginLeft="29dp"
         android:layout_marginBottom="17dp"
         android:ems="10"
+        android:hint="MM"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/cardInfoBtn"
         app:layout_constraintStart_toEndOf="@+id/textView16" />
@@ -228,4 +229,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextYear"
+        android:layout_width="85dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="yy"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/cardInfoBtn"
+        app:layout_constraintStart_toEndOf="@+id/editTextMonth" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="34dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="28dp"
+        android:text="/"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardInfoBtn"
+        app:layout_constraintEnd_toStartOf="@+id/editTextYear"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/editTextMonth" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
