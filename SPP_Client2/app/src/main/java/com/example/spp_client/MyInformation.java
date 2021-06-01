@@ -52,4 +52,17 @@ public class MyInformation extends AppCompatActivity {
         userCardValid.setText(member.getValidDate());
 
     }
+
+    public void onClickMyInfo(View v){
+        Intent myIntent = new Intent(getApplicationContext(), MyInformationRevise.class);
+        startActivity(myIntent);
+    }
+
+    public void onClickLogout(View v){
+        member = null;
+        Intent myIntent = new Intent(getApplicationContext(), Login.class);
+        myIntent.addFlags(myIntent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(myIntent);
+        finish();
+    }
 }

@@ -1,10 +1,12 @@
 package com.example.spp_client;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -47,32 +52,48 @@ public class SignUpActivity extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     private EditText editName;
-    private EditText editBirth;
     private EditText editID;
     private EditText editPW;
     private EditText editPhone;
     private EditText editAuthenticationNo;
     private TextView textState;
+    private Button idCheckBtn;
+
+    private static String yy,mm,dd;
+    private String birth;
+    private DatePicker datePicker;
 
     private boolean bId, bAuth;
 
     Response.Listener<String> responseListener;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        EditText brand_phone = (EditText) findViewById(R.id.editTextPhone);
-        brand_phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         textState = (TextView)findViewById(R.id.textState);
         editName = (EditText)findViewById(R.id.editTextName);
         editID = (EditText)findViewById(R.id.editTextID);
         editPW = (EditText)findViewById(R.id.editTextPW);
-        editBirth = (EditText)findViewById(R.id.editTextBirth);
         editAuthenticationNo = (EditText)findViewById(R.id.authenticationNo);
         editPhone = (EditText)findViewById(R.id.editTextPhone);
-
+        idCheckBtn = (Button)findViewById(R.id.checkBtn);
+        datePicker = findViewById(R.id.datepicker);
+        birth = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        datePicker.init(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+        new DatePicker.OnDateChangedListener(){
+            @Override
+            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
+                yy=Integer.toString(i);
+                if(i1+1<10) mm="0"+Integer.toString(i1+1);
+                else mm=Integer.toString(i1+1);
+                if(i2<10) dd="0"+Integer.toString(i2);
+                else dd=Integer.toString(i2);
+                birth = yy+mm+dd;
+            }
+        });
         bId = bAuth = false;
 
         editAuthenticationNo.setEnabled(false);
@@ -133,8 +154,16 @@ public class SignUpActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
                     Integer id_exist = jsonResponse.getInt("id_exist");
-                    if (id_exist==1) System.out.println("중복");
-                    else System.out.println("사용가능");
+                    if (id_exist==1) {
+                        bId = false;
+                        Toast.makeText(SignUpActivity.this, "중복된 ID입니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        bId = true;
+                        editID.setEnabled(false);
+                        idCheckBtn.setEnabled(false);
+                        idCheckBtn.setText("사용 가능");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -228,7 +257,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean isValidInput(){
         String name = ((EditText)findViewById(R.id.editTextName)).getText().toString();
-        String birth = ((EditText)findViewById(R.id.editTextBirth)).getText().toString();
         String id = ((EditText)findViewById(R.id.editTextID)).getText().toString();
         String pw = ((EditText)findViewById(R.id.editTextPW)).getText().toString();
         String pwChk = ((EditText)findViewById(R.id.editTextPWChk)).getText().toString();
@@ -298,16 +326,16 @@ public class SignUpActivity extends AppCompatActivity {
         IdCheckRequest registerRequest = new IdCheckRequest(editID.getText().toString(), responseListener);
         RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
         queue.add(registerRequest);
-        bId = true;
     }
 
     public void onClickSignUp(View v){
         if(bAuth&&bId&&isValidInput()){
             SignUpRequest registerRequest = new SignUpRequest(editID.getText().toString(), editPW.getText().toString(),
-                    editName.getText().toString(), editBirth.getText().toString(), editPhone.getText().toString(), responseListener);
+                     birth, editName.getText().toString(), editPhone.getText().toString(), responseListener);
             RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
             queue.add(registerRequest);
-            Toast.makeText(getApplicationContext(),"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext() ,"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show();
+            finish();
         }
         else if(!bAuth){
             Toast.makeText(getApplicationContext(),"전화번호 인증에 실패했습니다. 다시 인증해 주세요.",Toast.LENGTH_SHORT).show();

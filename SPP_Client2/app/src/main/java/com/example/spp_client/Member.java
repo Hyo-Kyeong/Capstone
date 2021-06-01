@@ -9,6 +9,7 @@ public class Member implements Serializable {
 
     private String mBirth;
     private String mPhone;
+    private String mName;
     private String mID;
     private String mPW;
     private String mCarNo;
@@ -58,6 +59,14 @@ public class Member implements Serializable {
 
     public void setBirth(String mBirth) {
         this.mBirth = mBirth;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
     }
 
     public String getPhone() {
