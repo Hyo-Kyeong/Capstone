@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class MainPage extends AppCompatActivity {
@@ -48,18 +49,20 @@ public class MainPage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONArray jsonArray = new JSONArray(response);
+                    if(!response.matches("null")) {
+                        JSONArray jsonArray = new JSONArray(response);
 
-                    int length= jsonArray.length();
-                    for(int i=0;i<length;i++){
-                        String date = jsonArray.getJSONArray(length-1).getString(4*i);
-                        date = date.substring(0,10);
-                        String price = jsonArray.getJSONArray(length-1).getString(4*i+1);
-                        String store = jsonArray.getJSONArray(length-1).getString(4*i+3);
-                        adapter.addItem(date,store,price);
+                        int length = jsonArray.length();
+                        for (int i = 0; i < length; i++) {
+                            String date = jsonArray.getJSONArray(length - 1).getString(4 * i);
+                            date = date.substring(0, 10);
+                            String price = jsonArray.getJSONArray(length - 1).getString(4 * i + 1);
+                            String store = jsonArray.getJSONArray(length - 1).getString(4 * i + 3);
+                            adapter.addItem(date, store, price);
 
+                        }
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

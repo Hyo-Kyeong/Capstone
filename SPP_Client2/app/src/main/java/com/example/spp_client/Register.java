@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -108,8 +109,28 @@ public class Register extends AppCompatActivity {
         finish();
     }
 
-    public void onClickCarInfoBtn(View v){
-        if(carInfoBtn.getText().toString().equals("등록")){
+    public boolean isValidCarInput(){
+        String regExp1 = "^\\d{2,3}[가-힣]\\d{4}$";
+        String temp="123가1345";
+        if(!carNo.getText().toString().matches(regExp1)) return false;
+        return true;
+    }
+
+    public boolean isValidCardInput(){
+        String regExp1 = "^\\d{12}$";
+        String regExp2 = "^\\d{3}$";
+        String regExp3 = "^(0[1-9]|1[012])$";
+        String regExp4 = "^(0[1-9]|1[0-9]|2[0-9]|3[01])$";
+
+        if(!cardNo.getText().toString().matches(regExp1)) {return false;}
+        if(!cvc.getText().toString().matches(regExp2)) {return false;}
+        if(!validMonth.getText().toString().matches(regExp3)) {return false;}
+        if(!validYear.getText().toString().matches((regExp4))) {return false;}
+        return true;
+    }
+
+    public void updateCarNo(){
+        if(isValidCarInput()) {
             CarRegisterRequest registerRequest = new CarRegisterRequest(member.getID(), carNo.getText().toString(), responseListener);
             RequestQueue queue = Volley.newRequestQueue(Register.this);
             queue.add(registerRequest);
@@ -117,22 +138,28 @@ public class Register extends AppCompatActivity {
             carNo.setEnabled(false);
             carInfoBtn.setText("수정");
             member.setCarNo(carNo.getText().toString());
+        }else{
+            Toast.makeText(this,"차량 번호를 정확히 입력해 주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onClickCarInfoBtn(View v){
+        if(carInfoBtn.getText().toString().equals("등록")){
+            updateCarNo();
         }
         else if(carInfoBtn.getText().toString().equals("수정")){
             carNo.setEnabled(true);
             carInfoBtn.setText("확인");
         }
         else if(carInfoBtn.getText().toString().equals("확인")){
-            carNo.setEnabled(false);
-            carInfoBtn.setText("수정");
-            member.setCarNo(carNo.getText().toString());
+            updateCarNo();
         }
     }
 
-    public void onClickCardInfoBtn(View v){
-        if(cardInfoBtn.getText().toString().equals("등록")){
-            CardRegisterRequest registerRequest = new CardRegisterRequest(member.getID(), cardNo.getText().toString(), validMonth.getText().toString().substring(0,2),
-                    validYear.getText().toString().substring(3,5), cvc.getText().toString(), responseListener);
+    public void updateCardInfo(){
+        if(isValidCardInput()){
+            CardRegisterRequest registerRequest = new CardRegisterRequest(member.getID(), cardNo.getText().toString(), validMonth.getText().toString(),
+                    validYear.getText().toString(), cvc.getText().toString(), responseListener);
             RequestQueue queue = Volley.newRequestQueue(Register.this);
             queue.add(registerRequest);
 
@@ -144,6 +171,15 @@ public class Register extends AppCompatActivity {
             member.setCardNo(cardNo.getText().toString());
             member.setCVC(cvc.getText().toString());
             member.setValidDate(validMonth.getText().toString()+"/"+validYear.getText().toString());
+        }
+        else{
+            Toast.makeText(this,"카드 정보를 정확히 입력해 주세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onClickCardInfoBtn(View v){
+        if(cardInfoBtn.getText().toString().equals("등록")){
+            updateCardInfo();
         }
         else if(cardInfoBtn.getText().toString().equals("수정")){
             cardNo.setEnabled(true);
@@ -153,14 +189,7 @@ public class Register extends AppCompatActivity {
             cardInfoBtn.setText("확인");
         }
         else if(cardInfoBtn.getText().toString().equals("확인")){
-            cardNo.setEnabled(false);
-            cvc.setEnabled(false);
-            validMonth.setEnabled(false);
-            validYear.setEnabled(false);
-            cardInfoBtn.setText("수정");
-            member.setCardNo(cardNo.getText().toString());
-            member.setCVC(cvc.getText().toString());
-            member.setValidDate(validMonth.getText().toString()+"/"+validYear.getText().toString());
+            updateCardInfo();
         }
     }
 }
