@@ -17,8 +17,8 @@ def recognize_plate(img, coords):
     eng_text = ['a','b','c','d','e','f','g','h','i','h','k','l','m','n','o','p','q','r','s','t',
     'u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
     'R','S','T','U','V','W','X','Y','Z','é']
-    white_list = ['거','너','더','러','머','버','서','어','저','모','누','너','보']
-    black_list = ['겨','녀','뎌','려','며','벼','셔','여','져','므','뉴','넌','브']
+    white_list = ['거','너','더','러','머','버','서','어','저','모','누','너','보','어']
+    black_list = ['겨','녀','뎌','려','며','벼','셔','여','져','므','뉴','넌','브','에']
     # separate coordinates from box
     xmin, ymin, xmax, ymax = coords
     box = img[int(ymin)-5:int(ymax)+5, int(xmin)-5:int(xmax)+5]
@@ -68,8 +68,8 @@ def recognize_plate(img, coords):
         text = None
     """
     ########################################################################################################################
-    cv2.imshow("1",roi)
-    cv2.waitKey(0)
+    #cv2.imshow("1",roi)
+    #cv2.waitKey(0)
     seq = 1
     #roi들의 height,y를 지니는 리스트
     avgRectList= []
@@ -150,8 +150,8 @@ def recognize_plate(img, coords):
         # perform another blur on character region
         roi = cv2.medianBlur(roi, 5)
         #####################################################################################################
-        cv2.imshow("roi",roi)
-        cv2.waitKey(0)
+        #cv2.imshow("roi",roi)
+        #cv2.waitKey(0)
         #확실한 config를 얻기 위한 리스트
         #text_list = []         
         #text2_list = []
@@ -367,9 +367,9 @@ def draw_bbox(image, bboxes, info = False, counted_classes = None, show_label=Tr
             if read_plate:
                 height_ratio = int(image_h / 25)
                 plate_number = recognize_plate(image, coor)
-                if plate_number != None:
-                    cv2.putText(image, plate_number, (int(coor[0]), int(coor[1]-height_ratio)), 
-                            cv2.FONT_HERSHEY_SIMPLEX, 1.25, (255,255,0), 2)
+                #if plate_number != None:
+                    #cv2.putText(image, plate_number, (int(coor[0]), int(coor[1]-height_ratio)), 
+                            #cv2.FONT_HERSHEY_SIMPLEX, 1.25, (255,255,0), 2)
 
             bbox_color = colors[class_ind]
             bbox_thick = int(0.6 * (image_h + image_w) / 600)
