@@ -57,6 +57,23 @@ public class PersonalInfoConsent extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop(){
+        super.onStop();
+        m_OkBtn.getBackground().setAlpha(255);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        m_OkBtn.getBackground().setAlpha(255);
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        m_OkBtn.getBackground().setAlpha(255);
+    }
+
+    @Override
     protected void onResume(){
         super.onResume();
         CheckBox box1 = (CheckBox)findViewById(R.id.imgChkButton);

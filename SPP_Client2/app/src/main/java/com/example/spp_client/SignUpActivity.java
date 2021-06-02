@@ -193,6 +193,13 @@ public class SignUpActivity extends AppCompatActivity {
         timer.cancel();
         timer.purge();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        receiveBtn.getBackground().setAlpha(255);
+        timer.cancel();
+        timer.purge();
+    }
 
     // [START on_start_check_user]
     @Override
