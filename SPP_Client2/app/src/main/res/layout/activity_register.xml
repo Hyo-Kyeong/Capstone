@@ -152,7 +152,7 @@
 
     <EditText
         android:id="@+id/editTextCardNo"
-        android:layout_width="130dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="130dp"
 
@@ -174,7 +174,7 @@
 
     <EditText
         android:id="@+id/editTextCVC"
-        android:layout_width="130dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="130dp"
         android:inputType="textPersonName"

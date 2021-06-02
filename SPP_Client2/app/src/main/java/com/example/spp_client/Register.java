@@ -117,7 +117,7 @@ public class Register extends AppCompatActivity {
     }
 
     public boolean isValidCardInput(){
-        String regExp1 = "^\\d{12}$";
+        String regExp1 = "^\\d{16}$";
         String regExp2 = "^\\d{3}$";
         String regExp3 = "^(0[1-9]|1[012])$";
         String regExp4 = "^\\d{2}$";
