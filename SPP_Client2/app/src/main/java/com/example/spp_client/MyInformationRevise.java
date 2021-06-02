@@ -73,7 +73,6 @@ public class MyInformationRevise extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_information_revise);
 
-        revise = (Button) findViewById(R.id.cardInfoBtn2);
         member = Member.getInstance();
         TextView userID = (TextView) findViewById(R.id.textUserID4);
         userID.setText(member.getID() + "님");

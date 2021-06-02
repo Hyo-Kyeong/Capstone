@@ -8,6 +8,9 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -38,6 +41,8 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -57,13 +62,19 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText editPhone;
     private EditText editAuthenticationNo;
     private TextView textState;
+    private TextView timeState;
     private Button idCheckBtn;
+    private Button receiveBtn;
 
     private static String yy,mm,dd;
     private String birth;
     private DatePicker datePicker;
 
+    static int second;
+
     private boolean bId, bAuth;
+
+    Timer timer;
 
     Response.Listener<String> responseListener;
 
@@ -74,6 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         textState = (TextView)findViewById(R.id.textState);
+        timeState = (TextView)findViewById(R.id.textView4);
         editName = (EditText)findViewById(R.id.editTextName);
         editID = (EditText)findViewById(R.id.editTextID);
         editPW = (EditText)findViewById(R.id.editTextPW);
@@ -81,6 +93,7 @@ public class SignUpActivity extends AppCompatActivity {
         editPhone = (EditText)findViewById(R.id.editTextPhone);
         idCheckBtn = (Button)findViewById(R.id.checkBtn);
         datePicker = findViewById(R.id.datepicker);
+        receiveBtn = (Button)findViewById(R.id.receiveBtn);
         birth = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         datePicker.init(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
         new DatePicker.OnDateChangedListener(){
@@ -95,6 +108,9 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
         bId = bAuth = false;
+
+        timer = new Timer();
+        second=60;
 
         editAuthenticationNo.setEnabled(false);
 
@@ -170,6 +186,13 @@ public class SignUpActivity extends AppCompatActivity {
             }
         };
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        receiveBtn.getBackground().setAlpha(200);
+        timer.cancel();
+        timer.purge();
+    }
 
     // [START on_start_check_user]
     @Override
@@ -226,7 +249,6 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
                             FirebaseUser user = task.getResult().getUser();
                             // Update UI
                             textState.setText("인증에 성공했습니다.");
@@ -238,7 +260,6 @@ public class SignUpActivity extends AppCompatActivity {
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(),"fail",Toast.LENGTH_SHORT).show();
                             textState.setText("인증에 실패했습니다.");
                             textState.setTextColor(Color.RED);
                             textState.setVisibility(View.VISIBLE);
@@ -304,11 +325,45 @@ public class SignUpActivity extends AppCompatActivity {
     public void onClickReceive(View v){
         String regExp = "^01(?:0|1|[6-9])[-]?(\\d{4})[-]?(\\d{4})$";
         if(editPhone.getText().toString().matches(regExp)){
-            Button receiveBtn = (Button)findViewById(R.id.receiveBtn);
+
             receiveBtn.setText("다시 보내기");
+            receiveBtn.setEnabled(false);
+            receiveBtn.getBackground().setAlpha(80);
+            timeState.setTextColor(Color.BLACK);
+            timeState.setVisibility(View.VISIBLE);
             startPhoneNumberVerification("+82"+editPhone.getText().toString());
             editAuthenticationNo.setEnabled(true);
-            Toast.makeText(getApplicationContext(),"60초 이내에 인증번호를 입력하세요.",Toast.LENGTH_SHORT);
+
+            final Handler handler = new Handler(Looper.getMainLooper()){
+                public void handleMessage(Message msg){
+                    timeState.setText("인증 번호를 다시 보낼 수 있습니다.");
+                    receiveBtn.setEnabled(true);
+                    receiveBtn.getBackground().setAlpha(200);
+                    second=60;
+                }
+            };
+            final Handler handler2 = new Handler(Looper.getMainLooper()){
+                public void handleMessage(Message msg){
+                    timeState.setText(Integer.toString(second)+"초 이후에 다시 보낼 수 있습니다.");
+                }
+            };
+            TimerTask tt = new TimerTask() {
+                @Override
+                public void run() {
+                    second-=1;
+                    Message msg2 = handler2.obtainMessage();
+                    handler2.sendMessage(msg2);
+                    System.out.println(second);
+                    if(second==0){
+                        Message msg = handler.obtainMessage();
+                        handler.sendMessage(msg);
+                        timer.cancel();
+                        timer.purge();
+                    }
+                }
+            };
+            timer.schedule(tt, 0, 1000);
+            Toast.makeText(getApplicationContext(),"60초 이내에 인증번호를 입력하세요.",Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(getApplicationContext(),"전화번호를 정확히 입력해주세요.",Toast.LENGTH_SHORT).show();

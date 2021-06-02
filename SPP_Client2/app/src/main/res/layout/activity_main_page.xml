@@ -4,36 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backback"
     tools:context=".MainPage">
 
     <TextView
         android:id="@+id/printCardNum2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:text="카드번호   :"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/printCarNum3" />
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/printCarNum3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:text="차량번호   :"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider15" />
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
     <View
         android:id="@+id/divider12"
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:layout_marginBottom="88dp"
-        android:background="?android:attr/listDivider"
+        android:background="@color/txtTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -44,7 +47,7 @@
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:layout_marginTop="100dp"
-        android:background="?android:attr/listDivider"
+        android:background="@color/txtTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,11 +57,11 @@
         android:id="@+id/divider9"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:layout_marginTop="132dp"
-        android:background="?android:attr/listDivider"
+        android:layout_marginTop="64dp"
+        android:background="@color/txtTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logoutBtn3" />
+        app:layout_constraintTop_toBottomOf="@+id/divider8" />
 
     <TextView
         android:id="@+id/textView19"
@@ -66,11 +69,11 @@
         android:layout_height="26dp"
         android:layout_marginStart="27dp"
         android:layout_marginLeft="27dp"
-        android:layout_marginTop="23dp"
         android:text="메인페이지"
         android:textColor="#000005"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/divider9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider8" />
 
@@ -78,22 +81,25 @@
         android:id="@+id/logoutBtn3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:onClick="onClickLogout"
         android:text="로그아웃"
+        android:background="@color/btnColor1"
+        android:textColor="#DCDCDC"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/divider8"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textUserID3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
         android:text="ID님"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/divider8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -101,13 +107,11 @@
         android:id="@+id/divider8"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:layout_marginTop="66dp"
-        android:layout_marginBottom="66dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/divider9"
+        android:layout_marginTop="88dp"
+        android:background="@color/txtTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/divider9"
-        app:layout_constraintTop_toTopOf="@+id/logoutBtn3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button"
@@ -120,6 +124,8 @@
         android:layout_marginRight="10dp"
         android:onClick="onClickRegister"
         android:text="회원 정보 등록"
+        android:background="@color/btnColor1"
+        android:textColor="#DCDCDC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintStart_toEndOf="@+id/button2"
@@ -136,10 +142,13 @@
         android:layout_marginRight="10dp"
         android:onClick="onClickPayment"
         android:text="결제 내역 조회"
+        android:background="@color/btnColor1"
+        android:textColor="#DCDCDC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider12" />
+        app:layout_constraintTop_toBottomOf="@+id/divider12"
+        app:layout_constraintVertical_bias="0.525" />
 
     <Button
         android:id="@+id/button3"
@@ -152,6 +161,8 @@
         android:layout_marginRight="30dp"
         android:onClick="onClickMyInformation"
         android:text="내 정보"
+        android:background="@color/btnColor1"
+        android:textColor="#DCDCDC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button"
@@ -162,27 +173,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:text="등록된 차량 정보가 없습니다."
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/printCarNum3"
         app:layout_constraintStart_toEndOf="@+id/printCarNum3"
-        app:layout_constraintTop_toBottomOf="@+id/divider15" />
+        app:layout_constraintTop_toTopOf="@+id/printCarNum3" />
 
     <TextView
         android:id="@+id/textCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="등록된 카드 정보가 없습니다."
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:text="등록된 카드 정보가 없습니다."
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/printCardNum2"
         app:layout_constraintStart_toEndOf="@+id/printCardNum2"
-        app:layout_constraintTop_toBottomOf="@+id/textCar" />
+        app:layout_constraintTop_toTopOf="@+id/printCardNum2" />
 
     <View
         android:id="@+id/divider15"
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:layout_marginTop="48dp"
-        android:background="?android:attr/listDivider"
+        android:background="@color/txtTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider9" />
 
@@ -247,9 +260,11 @@
         android:id="@+id/textCol1"
         android:layout_width="0dp"
         android:layout_height="30dp"
+        android:background="@color/txtTitle"
         android:gravity="center"
         android:text="결제일"
         android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/textCol2"
         app:layout_constraintHorizontal_weight="1"
@@ -260,9 +275,11 @@
         android:id="@+id/textCol2"
         android:layout_width="0dp"
         android:layout_height="30dp"
+        android:background="#000000"
         android:gravity="center"
         android:text="매장"
         android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/textCol3"
         app:layout_constraintHorizontal_weight="1"
@@ -273,13 +290,47 @@
         android:id="@+id/textCol3"
         android:layout_width="0dp"
         android:layout_height="30dp"
+        android:background="#000000"
         android:gravity="center"
         android:text="금액"
         android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/textCol2"
         app:layout_constraintTop_toTopOf="@id/divider16" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider15"
+        app:srcCompat="@drawable/car_13260" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:srcCompat="@drawable/creditcard_120378" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="65dp"
+        android:layout_height="91dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider8"
+        app:layout_constraintEnd_toStartOf="@+id/textUserID3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/iceman" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

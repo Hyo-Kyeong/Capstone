@@ -4,16 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/mainbackground"
     tools:context=".Login">
 
     <EditText
         android:id="@+id/editTextID"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="304dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="300dp"
+        android:background="@drawable/textshape"
+        android:drawableStart="@drawable/ic_baseline_person_24"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
         android:ems="10"
         android:hint="ID"
         android:inputType="textPersonName"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,39 +27,50 @@
     <EditText
         android:id="@+id/editTextPW"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/textshape"
+        android:drawableStart="@drawable/ic_baseline_https_24"
+        android:drawableLeft="@drawable/ic_baseline_https_24"
         android:ems="10"
         android:hint="PW"
         android:inputType="textPassword"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
         app:layout_constraintStart_toStartOf="@+id/editTextID"
         app:layout_constraintTop_toBottomOf="@+id/editTextID" />
 
     <Button
         android:id="@+id/loginBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonshape"
         android:onClick="onLoginButtonClicked"
         android:text="로그인"
-        app:layout_constraintStart_toStartOf="@+id/signupBtn"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPW"
+        app:layout_constraintStart_toStartOf="@+id/editTextPW"
         app:layout_constraintTop_toBottomOf="@+id/editTextPW" />
 
     <Button
         android:id="@+id/signupBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonshape"
         android:onClick="onSignUpButtonClicked"
         android:text="회원가입"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@+id/loginBtn"
+        app:layout_constraintStart_toStartOf="@+id/loginBtn"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="97dp"
         android:layout_height="57dp"
+        android:layout_marginTop="70dp"
         android:layout_marginBottom="52dp"
         android:gravity="center"
         android:text="SPP"
@@ -61,6 +78,7 @@
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/editTextID"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
