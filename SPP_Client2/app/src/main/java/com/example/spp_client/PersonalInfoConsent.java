@@ -19,7 +19,7 @@ public class PersonalInfoConsent extends AppCompatActivity {
 
         m_OkBtn = (Button)findViewById(R.id.okBtn);
         m_OkBtn.setEnabled(false);
-        m_OkBtn.getBackground().setAlpha(80);
+        m_OkBtn.getBackground().setAlpha(125);
 
 
         b1=false;
@@ -32,11 +32,11 @@ public class PersonalInfoConsent extends AppCompatActivity {
             public void onClick(View v){
                 if(box1.isChecked()&&box2.isChecked()){
                     m_OkBtn.setEnabled(true);
-                    m_OkBtn.getBackground().setAlpha(200);
+                    m_OkBtn.getBackground().setAlpha(255);
                 }
                 else{
                     m_OkBtn.setEnabled(false);
-                    m_OkBtn.getBackground().setAlpha(80);
+                    m_OkBtn.getBackground().setAlpha(125);
                 }
             }
         });
@@ -45,11 +45,11 @@ public class PersonalInfoConsent extends AppCompatActivity {
             public void onClick(View v){
                 if(box2.isChecked()&&box1.isChecked()){
                     m_OkBtn.setEnabled(true);
-                    m_OkBtn.getBackground().setAlpha(200);
+                    m_OkBtn.getBackground().setAlpha(255);
                 }
                 else{
                     m_OkBtn.setEnabled(false);
-                    m_OkBtn.getBackground().setAlpha(80);
+                    m_OkBtn.getBackground().setAlpha(125);
                 }
             }
         });

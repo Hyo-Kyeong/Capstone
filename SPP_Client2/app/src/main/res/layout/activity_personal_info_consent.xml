@@ -45,7 +45,7 @@
         android:id="@+id/okBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/btnColor1"
+        android:background="#254C9E"
         android:onClick="onOk"
         android:text="확인"
         android:textColor="#DCDCDC"

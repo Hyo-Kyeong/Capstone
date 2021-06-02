@@ -189,7 +189,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        receiveBtn.getBackground().setAlpha(200);
+        receiveBtn.getBackground().setAlpha(255);
         timer.cancel();
         timer.purge();
     }
@@ -328,7 +328,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             receiveBtn.setText("다시 보내기");
             receiveBtn.setEnabled(false);
-            receiveBtn.getBackground().setAlpha(80);
+            receiveBtn.getBackground().setAlpha(130);
             timeState.setTextColor(Color.BLACK);
             timeState.setVisibility(View.VISIBLE);
             startPhoneNumberVerification("+82"+editPhone.getText().toString());
@@ -338,7 +338,7 @@ public class SignUpActivity extends AppCompatActivity {
                 public void handleMessage(Message msg){
                     timeState.setText("인증 번호를 다시 보낼 수 있습니다.");
                     receiveBtn.setEnabled(true);
-                    receiveBtn.getBackground().setAlpha(200);
+                    receiveBtn.getBackground().setAlpha(255);
                     second=60;
                 }
             };
