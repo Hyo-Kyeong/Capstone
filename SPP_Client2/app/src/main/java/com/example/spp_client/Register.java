@@ -120,7 +120,7 @@ public class Register extends AppCompatActivity {
         String regExp1 = "^\\d{12}$";
         String regExp2 = "^\\d{3}$";
         String regExp3 = "^(0[1-9]|1[012])$";
-        String regExp4 = "^(0[1-9]|1[0-9]|2[0-9]|3[01])$";
+        String regExp4 = "^\\d{2}$";
 
         if(!cardNo.getText().toString().matches(regExp1)) {return false;}
         if(!cvc.getText().toString().matches(regExp2)) {return false;}
