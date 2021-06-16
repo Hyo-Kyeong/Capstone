@@ -460,3 +460,6 @@ def OCR(image):
         plate_num = plate_num[:-1]
 
     return plate_num
+
+
+

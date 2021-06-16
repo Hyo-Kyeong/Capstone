@@ -8,7 +8,7 @@ commit;
 USE SPP;
 
 CREATE TABLE CARD (
-	card VARCHAR(12) PRIMARY KEY,
+	card VARCHAR(16) PRIMARY KEY,
     expiration_month INTEGER,
     expiration_year INTEGER,
     cvc INTEGER
@@ -20,7 +20,7 @@ CREATE TABLE SPP_USER (
   pw VARCHAR(20),
   name VARCHAR(20),
   phone VARCHAR(11),
-  card VARCHAR(12),
+  card VARCHAR(16),
   car VARCHAR(10),
   birth INTEGER,
   FOREIGN KEY (card) REFERENCES CARD(card)
@@ -31,7 +31,7 @@ CREATE TABLE PAYMENT_HISTORY (
 	pay_date DATETIME,
     payment INTEGER,
     user_id INTEGER,
-    card VARCHAR(12),
+    card VARCHAR(16),
     car VARCHAR(10),
     place VARCHAR(20),
     FOREIGN KEY (user_id) REFERENCES SPP_USER(user_id),

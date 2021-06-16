@@ -179,8 +179,8 @@ class Ui_Dialog(object):
         self.carImage.setObjectName("carImage")
         self.gridLayout_5.addWidget(self.carImage, 0, 0, 1, 1)
 
-        camThread = threading.Thread(target=self.detectCarPlate)
-        camThread.start()
+        # camThread = threading.Thread(target=self.detectCarPlate)
+        # camThread.start()
 
     def detectCarPlate(self):
         detect_video_hyo.detectPlate(self, 'test_car4.mp4')
@@ -267,6 +267,7 @@ class Ui_Dialog(object):
             self.payListTable.setRowCount(0)
             self.payListTable.clearContents()
             self.sum = 0
+            self.sumLabel.setText("합계: " + str(self.sum))
             self.carNum.setText('')
 
     def cancelBtnClicked(self):
@@ -322,7 +323,7 @@ class Ui_Dialog(object):
         item = self.payListTable.horizontalHeaderItem(2)
         item.setText(_translate("Dialog", "금액"))
         self.cancleButton.setText(_translate("Dialog", "취소"))
-        self.sumLabel.setText(_translate("Dialog", "합계: "))
+        self.sumLabel.setText(_translate("Dialog", "합계:  0"))
         self.palceLabel.setText(_translate("Dialog", "Sejong Cafe"))
 
         pixmap = QtGui.QPixmap('logo.png')
